@@ -361,7 +361,6 @@ except:
 # starting and end dates
 startDate    = None            # 
 endDate      = None            # 
-#~ timeStepType = None            # options are daily, monthly and annually 
 
 try:
 	startDate    = str(sys.argv[4]) 
@@ -373,6 +372,7 @@ except:
 
 #- main script
 
+# the monthly files
 netcdfList = [
 'totalWaterStorageThickness_monthAvg_output.nc', 
 'discharge_monthAvg_output.nc',
@@ -380,6 +380,21 @@ netcdfList = [
 'snowCoverSWE_monthAvg_output.nc',
 'storGroundwater_monthAvg_output.nc',
 'surfaceWaterStorage_monthAvg_output.nc']
+
+# the annual files
+netcdfList = [
+'discharge_annuaAvg_output.nc'.
+'snowCoverSWE_annuaAvg_output.nc'.
+'snowFreeWater_annuaAvg_output.nc'.
+'interceptStor_annuaAvg_output.nc'.
+'topWaterLayer_annuaAvg_output.nc'.
+'storUppTotal_annuaAvg_output.nc'.
+'storLowTotal_annuaAvg_output.nc'.
+'storGroundwater_annuaAvg_output.nc'.
+'surfaceWaterStorage_annuaAvg_output.nc'.
+'totalWaterStorageThickness_annuaAvg_output.nc'.
+'waterBodyStorage_annuaAvg_output.nc'
+]
 
 for i in netcdfList:print i
 
