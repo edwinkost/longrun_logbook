@@ -36,7 +36,9 @@ print cmd
 #~ os.system(cmd)
 
 # get the list of pcrglobw netcdf files
-pcrglobwb_netcdf_list = glob.glob(os.path.join(output_folder, '*annua*.nc'))
+pcrglobwb_netcdf_list = glob.glob(os.path.join(output_folder, '/*annua*.nc'))
+
+print pcrglobwb_netcdf_list
 
 # preparing the complete output folder
 complete_output_folder = output_folder + "/" + str(year_int[0]) + "_to_" + str(last_year)
