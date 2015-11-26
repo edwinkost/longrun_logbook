@@ -76,8 +76,8 @@ modflow_netcdf_list = [
 'groundwaterVolumeEstimate_monthEnd_output.nc'
 ]
 
-#~ modflow_netcdf_list = [
-#~ 'groundwaterDepthLayer1_monthEnd_output.nc']
+# modflow_netcdf_list = [
+# 'groundwaterDepthLayer1_monthEnd_output.nc']
 
 # first, we have to select the proper years and calculate their yearly average values
 cmd = ''; print cmd
@@ -149,16 +149,16 @@ cmd = 'cdo add %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUpp
 print cmd
 os.system(cmd)
 cmd = ''; print cmd
-cmd = 'cdo add %s/%s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_annuaAvg.nc %s/surfaceWaterStorage_annuaAvg_output.nc %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_surfaceWaterStorage_annuaAvg.nc' %(complete_output_folder, complete_output_folder, complete_output_folder)
+cmd = 'cdo add %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_annuaAvg.nc %s/surfaceWaterStorage_annuaAvg_output.nc %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_surfaceWaterStorage_annuaAvg.nc' %(complete_output_folder, complete_output_folder, complete_output_folder)
 print cmd
 os.system(cmd)
 
 cmd = ''; print cmd
-cmd = 'cdo add %s/%s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_surfaceWaterStorage_annuaAvg.nc %s/groundwaterThicknessEstimate_annuaAvg_output.nc %s/TWS_type_one.nc' %(complete_output_folder, complete_output_folder, complete_output_folder)
+cmd = 'cdo add %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_surfaceWaterStorage_annuaAvg.nc %s/groundwaterThicknessEstimate_annuaAvg_output.nc %s/TWS_type_one.nc' %(complete_output_folder, complete_output_folder, complete_output_folder)
 print cmd
 os.system(cmd)
 
 cmd = ''; print cmd
-cmd = 'cdo add %s/%s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_surfaceWaterStorage_annuaAvg.nc %s/storGroundwater_annuaAvg_output.nc %s/TWS_type_two.nc' %(complete_output_folder, complete_output_folder, complete_output_folder)
+cmd = 'cdo add %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_surfaceWaterStorage_annuaAvg.nc %s/storGroundwater_annuaAvg_output.nc %s/TWS_type_two.nc' %(complete_output_folder, complete_output_folder, complete_output_folder)
 print cmd
 os.system(cmd)

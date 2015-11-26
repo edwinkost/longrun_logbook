@@ -386,7 +386,6 @@ netcdfList = [
 'storLowTotal_annuaAvg_output.nc',
 'storGroundwater_annuaAvg_output.nc',
 'surfaceWaterStorage_annuaAvg_output.nc',
-'discharge_annuaAvg_output.nc',
 'irrGrossDemand_annuaTot_output.nc',
 'nonIrrGrossDemand_annuaTot_output.nc',
 'totalRunoff_annuaTot_output.nc',
@@ -405,7 +404,6 @@ if list_type == "monthly":\
 		'storGroundwater_monthAvg_output.nc',
 		'surfaceWaterStorage_monthAvg_output.nc',
 		'discharge_monthAvg_output.nc',
-		'surfaceWaterAbstraction_monthTot_output.nc',
 		'totalGroundwaterAbstraction_monthTot_output.nc',
 		'gwRecharge_monthTot_output.nc',
 		'precipitation_monthTot_output.nc'
