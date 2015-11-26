@@ -33,7 +33,7 @@ for i_year in range(0, len(year_int)-1):
 cmd     += 'python nc_basin_merge.py %s %s/%i_to_%i/ %i %i-12-31 %i-12-31 & ' %(input_folder[len(year_int)-1], output_folder, year_int[len(year_int)-1], last_year,            num_of_cores, year_int[3],      last_year)
 cmd     += 'wait'
 print cmd
-#~ os.system(cmd)
+os.system(cmd)
 
 # get the list of pcrglobw netcdf files
 pcrglobwb_netcdf_list = glob.glob(output_folder + "/" + str(year_int[i_year]) + "_to_" + str(year_int[i_year+1]-1) + '/*annua*.nc')
@@ -67,30 +67,7 @@ print cmd
 os.system(cmd)
 
 
-#~ ../1984_to_1999/totalWaterStorageThickness_annuaAvg_output.nc \
-#~ ../1972_to_1983/totalWaterStorageThickness_annuaAvg_output.nc \
-#~ ../1950_to_1971/totalWaterStorageThickness_annuaAvg_output.nc \
-#~ totalWaterStorageThickness_annuaAvg_output.nc
-
-
-
-
-    #~ cmd += ' & '
-#~ print cmd
-#~ os.system(cmd)
-
-#~ cmd = ''
-#~ 'cdo mergetime \'
-#~ %s/2000_to_2010/discharge_annuaAvg_output.nc \
-#~ %s/1984_to_1999/discharge_annuaAvg_output.nc \
-#~ %s/1972_to_1983/discharge_annuaAvg_output.nc \
-#~ %s/1950_to_1971/discharge_annuaAvg_output.nc \
-#~ %s/discharge_annuaAvg_output.nc
-#~ 
-#~ 
-#~ # merging 
-
-# merging modflow output over time
+# merging modflow output over time (modflow output files are only at monthly resolution
 modflow_netcdf_list = []
 
 # calculate TWS
