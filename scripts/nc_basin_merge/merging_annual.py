@@ -38,6 +38,8 @@ print cmd
 # get the list of pcrglobw netcdf files
 pcrglobwb_netcdf_list = glob.glob(os.path.join(output_folder + "/" + str(year_int[i_year]) + "_to_" + str(year_int[i_year+1]-1), '/*annua*.nc'))
 
+print os.path.join(output_folder + "/" + str(year_int[i_year]) + "_to_" + str(year_int[i_year+1]-1), '/*annua*.nc'))
+
 print pcrglobwb_netcdf_list
 
 # preparing the complete output folder
