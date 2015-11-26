@@ -19,15 +19,18 @@ input_folder = [
 '/projects/0/wtrcycle/users/edwin/edwin/05min_runs_november_2015/pcrglobwb_modflow_from_1950/continue_from_2000/'
 ]
 
+# maximum number of cores used per command lines
+num_of_cores = 6
+
 # merging annual resolution over areas (you have to type the source folders directly 
 cmd  = ''
-cmd += 'python nc_basin_merge.py %s %s/%i_to_%i/ 6 %i-12-31 %i-12-31 & ' %(input_folder[0], output_folder, year_int[0], year_int[1] - 1, year_int[0], year_int[1] - 1)
-cmd += 'python nc_basin_merge.py %s %s/%i_to_%i/ 6 %i-12-31 %i-12-31 & ' %(input_folder[1], output_folder, year_int[1], year_int[2] - 1, year_int[1], year_int[2] - 1)
-cmd += 'python nc_basin_merge.py %s %s/%i_to_%i/ 6 %i-12-31 %i-12-31 & ' %(input_folder[2], output_folder, year_int[2], year_int[3] - 1, year_int[2], year_int[3] - 1)
-cmd += 'python nc_basin_merge.py %s %s/%i_to_%i/ 6 %i-12-31 %i-12-31 & ' %(input_folder[3], output_folder, year_int[3], last_year      , year_int[3], last_year)
+cmd += 'python nc_basin_merge.py %s %s/%i_to_%i/ %i %i-12-31 %i-12-31 & ' %(input_folder[0], output_folder, year_int[0], year_int[1] - 1, num_of_cores, year_int[0], year_int[1] - 1)
+cmd += 'python nc_basin_merge.py %s %s/%i_to_%i/ %i %i-12-31 %i-12-31 & ' %(input_folder[1], output_folder, year_int[1], year_int[2] - 1, num_of_cores, year_int[1], year_int[2] - 1)
+cmd += 'python nc_basin_merge.py %s %s/%i_to_%i/ %i %i-12-31 %i-12-31 & ' %(input_folder[2], output_folder, year_int[2], year_int[3] - 1, num_of_cores, year_int[2], year_int[3] - 1)
+cmd += 'python nc_basin_merge.py %s %s/%i_to_%i/ %i %i-12-31 %i-12-31 & ' %(input_folder[3], output_folder, year_int[3], last_year      , num_of_cores, year_int[3], last_year)
 cmd += 'wait'
 print cmd
-#~ os.system(cmd)
+os.system(cmd)
 
 file_name_list = [
 'snowCoverSWE_annuaAvg_output.nc',
