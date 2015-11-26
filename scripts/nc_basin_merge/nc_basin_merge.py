@@ -130,10 +130,7 @@ def mergeNetCDF(inputTuple):
 			datetime_range = [startTime + relativedelta(months =+x) for x in range(0, number_of_months)]
 		
 		if timeStepType == "yearly":
-			number_of_years = startTime.year - endTime.year + 1
-			
-			print number_of_years
-			
+			number_of_years = endTime.year - startTime.year + 1
 			datetime_range = [startTime + relativedelta(years =+x) for x in range(0, number_of_years)]
 		
 		# time variables that will be used 
