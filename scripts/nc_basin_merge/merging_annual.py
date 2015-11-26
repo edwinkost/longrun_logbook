@@ -76,28 +76,32 @@ modflow_netcdf_list = [
 'groundwaterVolumeEstimate_monthEnd_output.nc'
 ]
 
-# first, we have to select the proper year
+# first, we have to select the proper years and calculate their yearly average values
 cmd = ''
 for nc_file in modflow_netcdf_list:
     
     # delete output files if they are exists
     for i_year in range(0, len(year_int)-1):
-        output_file = '%s/%i_to_%i/%s' %(output_folder, year_int[i_year],          year_int[i_year+1]-1, nc_file)
+        output_file = '%s/%i_to_%i/%s' %(output_folder, year_int[i_year],          year_int[i_year+1]-1, nc_file+"annuaAvg.nc")
         if os.path.exists(output_file): os.remove(output_file)
-    output_file     = '%s/%i_to_%i/%s' %(output_folder, year_int[len(year_int)-1], last_year,            nc_file)
+    output_file     = '%s/%i_to_%i/%s' %(output_folder, year_int[len(year_int)-1], last_year,            nc_file+"annuaAvg.nc")
     if os.path.exists(output_file): os.remove(output_file)        
 
     # command lines for selecting years
     for i_year in range(0, len(year_int)-1):
-        cmd += 'cdo selyear,%i/%i %s/modflow/transient/netcdf/%s ' %(year_int[i_year],          year_int[i_year+1]-1, input_folder[i_year]         , nc_file)
-        output_file = '%s/%i_to_%i/%s' %(output_folder, year_int[i_year],          year_int[i_year+1]-1, nc_file)
+        cmd += 'cdo yearavg -selyear,%i/%i %s/modflow/transient/netcdf/%s ' %(year_int[i_year],          year_int[i_year+1]-1, input_folder[i_year]         , nc_file)
+        output_file = '%s/%i_to_%i/%s' %(output_folder, year_int[i_year],          year_int[i_year+1]-1, nc_file+"annuaAvg.nc")
         cmd += output_file + " & "
-    cmd     += 'cdo selyear,%i/%i %s/modflow/transient/netcdf/%s ' %(year_int[len(year_int)-1], last_year,            input_folder[len(year_int)-1], nc_file)    
-    output_file = '%s/%i_to_%i/%s'     %(output_folder, year_int[len(year_int)-1], last_year,            nc_file)
+    cmd     += 'cdo yearavg -selyear,%i/%i %s/modflow/transient/netcdf/%s ' %(year_int[len(year_int)-1], last_year,            input_folder[len(year_int)-1], nc_file)    
+    output_file = '%s/%i_to_%i/%s'     %(output_folder, year_int[len(year_int)-1], last_year,            nc_file+"annuaAvg.nc")
     cmd += output_file + " & "
 cmd     += 'wait'
 print cmd
 os.system(cmd)
+
+
+# then we will merge it over time
+
 
 # calculate TWS
 cmd = ''
