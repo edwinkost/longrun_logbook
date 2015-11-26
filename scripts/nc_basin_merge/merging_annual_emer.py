@@ -26,6 +26,11 @@ num_of_cores = 6
 cmd = 'mkdir '+str(output_folder)
 os.system(cmd)
 
+# preparing the complete output folder
+complete_output_folder = output_folder + "/" + str(year_int[0]) + "_to_" + str(last_year)
+cmd = 'mkdir '+str(complete_output_folder)
+os.system(cmd)
+
 # merging modflow output over time (modflow output files are only at monthly resolution)
 modflow_netcdf_list = [
 'groundwaterDepthLayer1_monthEnd_output.nc',
