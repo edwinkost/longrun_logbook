@@ -27,7 +27,7 @@ cmd += 'python nc_basin_merge.py %s %s/%i_to_%i/ 6 %i-12-31 $i-12-31 & ' %(input
 cmd += 'python nc_basin_merge.py %s %s/%i_to_%i/ 6 %i-12-31 $i-12-31 & ' %(input_folder[3], output_folder, year_int[3], last_year      , year_int[3], last_year)
 cmd += 'wait'
 print cmd
-os.system(cmd)
+#~ os.system(cmd)
 
 file_name_list = [
 'snowCoverSWE_annuaAvg_output.nc',
