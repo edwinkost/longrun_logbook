@@ -39,7 +39,7 @@ print cmd
 pcrglobwb_netcdf_list = glob.glob(os.path.join(output_folder, '*annua*.nc'))
 
 # preparing the complete output folder
-complete_out_folder = output_folder + "/" + str(year_int[0]) + "_to_" + str(last_year)
+complete_output_folder = output_folder + "/" + str(year_int[0]) + "_to_" + str(last_year)
 cmd = 'mkdir '+str(complete_output_folder)
 os.system(cmd)
 
@@ -50,7 +50,7 @@ for nc_file in pcrglobwb_netcdf_list:
     for i_year in range(0, len(year_int)-1):
         cmd += '%s/%i_to_%i/%s ' %(output_folder, year_int[i_year],          year_int[i_year+1] - 1, str(os.path.basename(nc_file)))
     cmd     += '%s/%i_to_%i/%s ' %(output_folder, year_int[len(year_int)-1], last_year             , str(os.path.basename(nc_file)))
-    cmd += '%s/%s & ' %(complete_out_folder, str(os.path.basename(nc_file)))
+    cmd += '%s/%s & ' %(complete_output_folder, str(os.path.basename(nc_file)))
 cmd     += 'wait'
 print cmd
 #~ os.system(cmd)
