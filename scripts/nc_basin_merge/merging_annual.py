@@ -27,7 +27,7 @@ cmd = 'mkdir '+str(output_folder)
 os.system(cmd)
 
 # merging annual resolution over areas
-cmd      = ''
+cmd = ''; print cmd
 for i_year in range(0, len(year_int)-1):
     cmd += 'python nc_basin_merge.py %s %s/%i_to_%i/ %i %i-12-31 %i-12-31 & ' %(input_folder[i_year]         , output_folder, year_int[i_year]         , year_int[i_year+1]-1, num_of_cores, year_int[i_year]         , year_int[i_year+1]-1)
 cmd     += 'python nc_basin_merge.py %s %s/%i_to_%i/ %i %i-12-31 %i-12-31 & ' %(input_folder[len(year_int)-1], output_folder, year_int[len(year_int)-1], last_year,            num_of_cores, year_int[len(year_int)-1], last_year)
@@ -46,7 +46,7 @@ cmd = 'mkdir '+str(complete_output_folder)
 os.system(cmd)
 
 # merging over time
-cmd = ''
+cmd = ''; print cmd
 for nc_file in pcrglobwb_netcdf_list:
     
     # output file
@@ -76,11 +76,11 @@ modflow_netcdf_list = [
 'groundwaterVolumeEstimate_monthEnd_output.nc'
 ]
 
-modflow_netcdf_list = [
-'groundwaterDepthLayer1_monthEnd_output.nc']
+#~ modflow_netcdf_list = [
+#~ 'groundwaterDepthLayer1_monthEnd_output.nc']
 
 # first, we have to select the proper years and calculate their yearly average values
-cmd = ''
+cmd = ''; print cmd
 for nc_file in modflow_netcdf_list:
     
     # delete output files if they are exists
@@ -104,7 +104,7 @@ os.system(cmd)
 
 
 # then we will merge it over time
-cmd = ''
+cmd = ''; print cmd
 for nc_file in modflow_netcdf_list:
     
     # output file
@@ -122,11 +122,11 @@ cmd     += 'wait'
 print cmd
 os.system(cmd)
 
+# calculate annual average of groundwaterThicknessEstimate_monthEnd_output.nc
+cmd = ''; print cmd
+cmd = 'cdo yearavg %s/groundwaterThicknessEstimate_monthEnd_output.nc %s/groundwaterThicknessEstimate_annuaAvg_output.nc' %(complete_output_folder, complete_output_folder)
+print cmd
+os.system(cmd)
 
-# calculate TWS
-cmd = ''
-
-#~ # calculate annual average of 
-#~ cmd  = '' 
-#~ cmd += 'cdo yearavg %s %s' %(complete_output_folder + "/groundwaterThicknessEstimate_annuaAvg_output.nc", complete_output_folder + "/groundwaterThicknessEstimate_annuaAvg_output.nc")
+# calculate annual average of TWS
 
