@@ -27,29 +27,33 @@ cmd = 'mkdir '+str(output_folder)
 os.system(cmd)
 
 # merging annual resolution over areas
-cmd  = ''
-for i_year in range(0, len(year_int) - 1):
-    cmd += 'python nc_basin_merge.py %s %s/%i_to_%i/ %i %i-12-31 %i-12-31 & ' %(input_folder[i_year], output_folder, year_int[i_year], year_int[i_year+1]-1, num_of_cores, year_int[i_year], year_int[i_year+1]-1)
-cmd += 'python nc_basin_merge.py %s %s/%i_to_%i/ %i %i-12-31 %i-12-31 & ' %(input_folder[len(year_int)-1], output_folder, year_int[len(year_int)-1], last_year, num_of_cores, year_int[3], last_year)
-cmd += 'wait'
+cmd      = ''
+for i_year in range(0, len(year_int)-1):
+    cmd += 'python nc_basin_merge.py %s %s/%i_to_%i/ %i %i-12-31 %i-12-31 & ' %(input_folder[i_year]         , output_folder, year_int[i_year]         , year_int[i_year+1]-1, num_of_cores, year_int[i_year], year_int[i_year+1]-1)
+cmd     += 'python nc_basin_merge.py %s %s/%i_to_%i/ %i %i-12-31 %i-12-31 & ' %(input_folder[len(year_int)-1], output_folder, year_int[len(year_int)-1], last_year,            num_of_cores, year_int[3],      last_year)
+cmd     += 'wait'
 print cmd
+#~ os.system(cmd)
+
+# get the list of pcrglobw netcdf files
+pcrglobwb_netcdf_list = glob.glob(os.path.join(output_folder, '*annua*.nc'))
+
+# preparing the complete output folder
+complete_out_folder = output_folder + "/" + str(year_int[0]) + "_to_" + str(last_year)
+cmd = 'mkdir '+str(complete_output_folder)
 os.system(cmd)
 
-#~ # get the list of pcrglobw bnetcdf files
-#~ pcrglobwb_netcdf_list = glob.glob(os.path.join(output_folder, '*annua*.nc'))
-#~ 
-#~ # preparing the complete output folder
-#~ complete_out_folder = 
-#~ 
-#~ # merging over time
-#~ cmd = ''
-#~ for nc_file in pcrglobwb_netcdf_list:
-    #~ cmd += 'cdo mergetime '
-    #~ cmd += '%s/%i_to_%i/%s ' %(output_folder, year_int[0], year_int[1] - 1, str(os.path.basename(nc_file)))
-    #~ cmd += '%s/%i_to_%i/%s ' %(output_folder, year_int[1], year_int[2] - 1, str(os.path.basename(nc_file)))
-    #~ cmd += '%s/%i_to_%i/%s ' %(output_folder, year_int[2], year_int[3] - 1, str(os.path.basename(nc_file)))
-    #~ cmd += '%s/%i_to_%i/%s ' %(output_folder, year_int[3], last_year      , str(os.path.basename(nc_file)))
-
+# merging over time
+cmd = ''
+for nc_file in pcrglobwb_netcdf_list:
+    cmd += 'cdo mergetime '
+    for i_year in range(0, len(year_int)-1):
+        cmd += '%s/%i_to_%i/%s ' %(output_folder, year_int[i_year],          year_int[i_year+1] - 1, str(os.path.basename(nc_file)))
+    cmd     += '%s/%i_to_%i/%s ' %(output_folder, year_int[len(year_int)-1], last_year             , str(os.path.basename(nc_file)))
+    cmd += '%s/%s & ' %(complete_out_folder, str(os.path.basename(nc_file)))
+cmd     += 'wait'
+print cmd
+#~ os.system(cmd)
 
 
 #~ ../1984_to_1999/totalWaterStorageThickness_annuaAvg_output.nc \
