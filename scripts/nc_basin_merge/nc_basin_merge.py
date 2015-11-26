@@ -260,7 +260,10 @@ def mergeNetCDF(inputTuple):
 	
 	print 'nr of time steps = %s, nr of files = %s ' % (len(uniqueTimes), len(netCDFInput))
 	for time in uniqueTimes[:]:
-		print 'processing %s for time index %.0d' %(ncName, 1+ time - min(uniqueTimes))
+
+		#~ print 'processing %s for time index %.0d' %(ncName, 1+ time - min(uniqueTimes))
+		print 'processing %s for time %.0d' %(ncName, time)
+
 		#-create empty field to fill
 		variableArray= np.ones((len(latitudes),len(longitudes)))*MV
 		
@@ -397,8 +400,8 @@ for i in netcdfList:print i
 
 ncores = min(len(netcdfList), max_number_of_cores)
 
-# testing for a single job
-mergeNetCDF((netcdfList[0], latMin, latMax, lonMin, lonMax, deltaLat, deltaLon, startDate, endDate))
+#~ # testing for a single job
+#~ mergeNetCDF((netcdfList[0], latMin, latMax, lonMin, lonMax, deltaLat, deltaLon, startDate, endDate))
 
 ll = []
 for ncName in netcdfList:
