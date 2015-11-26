@@ -82,25 +82,42 @@ for nc_file in modflow_netcdf_list:
     
     # delete output files if they are exists
     for i_year in range(0, len(year_int)-1):
-        output_file = '%s/%i_to_%i/%s' %(output_folder, year_int[i_year],          year_int[i_year+1]-1, nc_file+"annuaAvg.nc")
+        output_file = '%s/%i_to_%i/%s' %(output_folder, year_int[i_year],          year_int[i_year+1]-1, nc_file)
         if os.path.exists(output_file): os.remove(output_file)
-    output_file     = '%s/%i_to_%i/%s' %(output_folder, year_int[len(year_int)-1], last_year,            nc_file+"annuaAvg.nc")
+    output_file     = '%s/%i_to_%i/%s' %(output_folder, year_int[len(year_int)-1], last_year,            nc_file)
     if os.path.exists(output_file): os.remove(output_file)        
 
     # command lines for selecting years
     for i_year in range(0, len(year_int)-1):
-        cmd += 'cdo yearavg -selyear,%i/%i %s/modflow/transient/netcdf/%s ' %(year_int[i_year],          year_int[i_year+1]-1, input_folder[i_year]         , nc_file)
-        output_file = '%s/%i_to_%i/%s' %(output_folder, year_int[i_year],          year_int[i_year+1]-1, nc_file+"annuaAvg.nc")
+        cmd += 'cdo selyear,%i/%i %s/modflow/transient/netcdf/%s ' %(year_int[i_year],          year_int[i_year+1]-1, input_folder[i_year]         , nc_file)
+        output_file = '%s/%i_to_%i/%s' %(output_folder, year_int[i_year],          year_int[i_year+1]-1, nc_file)
         cmd += output_file + " & "
-    cmd     += 'cdo yearavg -selyear,%i/%i %s/modflow/transient/netcdf/%s ' %(year_int[len(year_int)-1], last_year,            input_folder[len(year_int)-1], nc_file)    
-    output_file = '%s/%i_to_%i/%s'     %(output_folder, year_int[len(year_int)-1], last_year,            nc_file+"annuaAvg.nc")
+    cmd     += 'cdo selyear,%i/%i %s/modflow/transient/netcdf/%s ' %(year_int[len(year_int)-1], last_year,            input_folder[len(year_int)-1], nc_file)    
+    output_file = '%s/%i_to_%i/%s'     %(output_folder, year_int[len(year_int)-1], last_year,            nc_file)
     cmd += output_file + " & "
 cmd     += 'wait'
 print cmd
-os.system(cmd)
+#~ os.system(cmd)
 
 
 # then we will merge it over time
+cmd = ''
+for nc_file in modflow_netcdf_list:
+    
+    # output file
+    output_file = ''
+    output_file = '%s/%s' %(complete_output_folder, nc_file)
+    if os.path.exists(output_file): os.remove(output_file)
+    
+    # command line for merging
+    cmd += 'cdo mergetime '
+    for i_year in range(0, len(year_int)-1):
+        cmd += '%s/%i_to_%i/%s ' %(output_folder, year_int[i_year],          year_int[i_year+1] - 1, nc_file)
+    cmd     += '%s/%i_to_%i/%s ' %(output_folder, year_int[len(year_int)-1], last_year             , nc_file)
+    cmd += output_file + " & "
+cmd     += 'wait'
+print cmd
+#~ os.system(cmd)
 
 
 # calculate TWS
@@ -109,3 +126,4 @@ cmd = ''
 #~ # calculate annual average of 
 #~ cmd  = '' 
 #~ cmd += 'cdo yearavg %s %s' %(complete_output_folder + "/groundwaterThicknessEstimate_annuaAvg_output.nc", complete_output_folder + "/groundwaterThicknessEstimate_annuaAvg_output.nc")
+
