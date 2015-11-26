@@ -100,7 +100,7 @@ for nc_file in modflow_netcdf_list:
     cmd += output_file + " & "
 cmd     += 'wait'
 print cmd
-#~ os.system(cmd)
+os.system(cmd)
 
 
 # then we will merge it over time
@@ -120,7 +120,7 @@ for nc_file in modflow_netcdf_list:
     cmd += output_file + " & "
 cmd     += 'wait'
 print cmd
-#~ os.system(cmd)
+os.system(cmd)
 
 
 # calculate TWS
