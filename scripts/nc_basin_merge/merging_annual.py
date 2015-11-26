@@ -76,6 +76,9 @@ modflow_netcdf_list = [
 'groundwaterVolumeEstimate_monthEnd_output.nc'
 ]
 
+modflow_netcdf_list = [
+'groundwaterDepthLayer1_monthEnd_output.nc']
+
 # first, we have to select the proper years and calculate their yearly average values
 cmd = ''
 for nc_file in modflow_netcdf_list:
