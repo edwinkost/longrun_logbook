@@ -33,7 +33,7 @@ for i_year in range(0, len(year_int)-1):
 cmd     += 'python nc_basin_merge.py %s %s/%i_to_%i/ %i %i-12-31 %i-12-31 & ' %(input_folder[len(year_int)-1], output_folder, year_int[len(year_int)-1], last_year,            num_of_cores, year_int[len(year_int)-1], last_year)
 cmd     += 'wait'
 print cmd
-#~ os.system(cmd)
+os.system(cmd)
 
 # get the list of pcrglobw netcdf files
 pcrglobwb_netcdf_list = glob.glob(output_folder + "/" + str(year_int[i_year]) + "_to_" + str(year_int[i_year+1]-1) + '/*annua*.nc')
@@ -63,7 +63,7 @@ for nc_file in pcrglobwb_netcdf_list:
     
 cmd     += 'wait'
 print cmd
-#~ os.system(cmd)
+os.system(cmd)
 
 
 # merging modflow output over time (modflow output files are only at monthly resolution)
@@ -108,7 +108,6 @@ cmd = ''; print cmd
 for nc_file in modflow_netcdf_list:
     
     # output file
-    output_file = ''
     output_file = '%s/%s' %(complete_output_folder, nc_file)
     if os.path.exists(output_file): os.remove(output_file)
     
@@ -129,4 +128,27 @@ print cmd
 os.system(cmd)
 
 # calculate annual average of TWS
-
+cmd = ''; print cmd
+cmd = 'cdo add %s/snowCoverSWE_annuaAvg_output.nc %s/snowFreeWater_annuaAvg_output.nc %s/snowCoverSWE_snowFreeWater_annuaAvg.nc' %(complete_output_folder, complete_output_folder, complete_output_folder)
+print cmd
+os.system(cmd)
+cmd = ''; print cmd
+cmd = 'cdo add %s/snowCoverSWE_snowFreeWater_annuaAvg.nc %s/interceptStor_annuaAvg_output.nc %s/snowCoverSWE_snowFreeWater_interceptStor_annuaAvg.nc' %(complete_output_folder, complete_output_folder, complete_output_folder)
+print cmd
+os.system(cmd)
+cmd = ''; print cmd
+cmd = 'cdo add %s/snowCoverSWE_snowFreeWater_interceptStor_annuaAvg.nc %s/topWaterLayer_annuaAvg_output.nc %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_annuaAvg.nc' %(complete_output_folder, complete_output_folder, complete_output_folder)
+print cmd
+os.system(cmd)
+cmd = ''; print cmd
+cmd = 'cdo add %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_annuaAvg.nc %s/storUppTotal_annuaAvg_output.nc %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_annuaAvg.nc' %(complete_output_folder, complete_output_folder, complete_output_folder)
+print cmd
+os.system(cmd)
+cmd = ''; print cmd
+cmd = 'cdo add %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_annuaAvg.nc %s/storLowTotal_annuaAvg_output.nc %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_annuaAvg.nc' %(complete_output_folder, complete_output_folder, complete_output_folder)
+print cmd
+os.system(cmd)
+cmd = ''; print cmd
+cmd = 'cdo add %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_annuaAvg.nc %s/groundwaterThicknessEstimate_annuaAvg_output.nc %s/TWS.nc' %(complete_output_folder, complete_output_folder, complete_output_folder)
+print cmd
+os.system(cmd)
