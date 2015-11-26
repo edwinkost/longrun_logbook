@@ -361,7 +361,6 @@ except:
 # starting and end dates
 startDate    = None            # 
 endDate      = None            # 
-
 try:
 	startDate    = str(sys.argv[4]) 
 	endDate      = str(sys.argv[5])
@@ -369,17 +368,15 @@ try:
 except:
 	pass
 
+# type of netcdf file list (see below):
+list_type = None
+try:
+	list_type = str(sys.argv[6]) 
+except:
+	pass
+
 
 #- main script
-
-# the monthly files
-netcdfList = [
-'totalWaterStorageThickness_monthAvg_output.nc', 
-'discharge_monthAvg_output.nc',
-'totalGroundwaterAbstraction_monthTot_output.nc',
-'snowCoverSWE_monthAvg_output.nc',
-'storGroundwater_monthAvg_output.nc',
-'surfaceWaterStorage_monthAvg_output.nc']
 
 # the annual files
 netcdfList = [
@@ -393,6 +390,15 @@ netcdfList = [
 'storGroundwater_annuaAvg_output.nc',
 'surfaceWaterStorage_annuaAvg_output.nc'
 ]
+
+# the monthly files
+if list_type == "monthly":\
+	netcdfList = [
+		'discharge_monthAvg_output.nc',
+		'totalGroundwaterAbstraction_monthTot_output.nc',
+		'snowCoverSWE_monthAvg_output.nc',
+		'storGroundwater_monthAvg_output.nc',
+		'surfacesWaterStorage_monthAvg_output.nc']
 
 for i in netcdfList:print i
 
