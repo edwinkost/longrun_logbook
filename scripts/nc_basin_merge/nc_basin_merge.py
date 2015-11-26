@@ -391,9 +391,7 @@ netcdfList = [
 'storUppTotal_annuaAvg_output.nc',
 'storLowTotal_annuaAvg_output.nc',
 'storGroundwater_annuaAvg_output.nc',
-'surfaceWaterStorage_annuaAvg_output.nc',
-'totalWaterStorageThickness_annuaAvg_output.nc',
-'waterBodyStorage_annuaAvg_output.nc'
+'surfaceWaterStorage_annuaAvg_output.nc'
 ]
 
 for i in netcdfList:print i
