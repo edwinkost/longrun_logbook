@@ -60,9 +60,9 @@ print cmd
 
 
 
-    cmd += ' & '
-print cmd
-os.system(cmd)
+    #~ cmd += ' & '
+#~ print cmd
+#~ os.system(cmd)
 
 #~ cmd = ''
 #~ 'cdo mergetime \'
