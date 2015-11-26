@@ -90,10 +90,10 @@ for nc_file in modflow_netcdf_list:
 
     # command lines for selecting years
     for i_year in range(0, len(year_int)-1):
-        cmd += 'cdo selyear,%i/%i %s/modflow/transient/netcdf/%s ' %(year_int[i_year],          year_int[i_year+1]-1, input_folder[i_year])
+        cmd += 'cdo selyear,%i/%i %s/modflow/transient/netcdf/%s ' %(year_int[i_year],          year_int[i_year+1]-1, input_folder[i_year]     , nc_file)
         output_file = '%s/%i_to_%i/%s' %(output_folder, year_int[i_year],          year_int[i_year+1]-1, nc_file)
         cmd += output_file + " & "
-    cmd     += 'cdo selyear,%i/%i %s/modflow/transient/netcdf/%s ' %(year_int[len(year_int)-1], last_year,            year_int[len(year_int)-1])    
+    cmd     += 'cdo selyear,%i/%i %s/modflow/transient/netcdf/%s ' %(year_int[len(year_int)-1], last_year,            year_int[len(year_int)-1], nc_file)    
     output_file = '%s/%i_to_%i/%s'     %(output_folder, year_int[len(year_int)-1], last_year,            nc_file)
     cmd += output_file + " & "
 cmd     += 'wait'
