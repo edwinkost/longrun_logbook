@@ -45,17 +45,26 @@ complete_output_folder = output_folder + "/" + str(year_int[0]) + "_to_" + str(l
 cmd = 'mkdir '+str(complete_output_folder)
 os.system(cmd)
 
+
 # merging over time
 cmd = ''
 for nc_file in pcrglobwb_netcdf_list:
+    
+    # output file
+    output_file = ''
+    output_file = '%s/%s' %(complete_output_folder, str(os.path.basename(nc_file)))
+    if os.path.exists(output_file): os.remove(output_file)
+    
+    # command line for merging
     cmd += 'cdo mergetime '
     for i_year in range(0, len(year_int)-1):
         cmd += '%s/%i_to_%i/%s ' %(output_folder, year_int[i_year],          year_int[i_year+1] - 1, str(os.path.basename(nc_file)))
     cmd     += '%s/%i_to_%i/%s ' %(output_folder, year_int[len(year_int)-1], last_year             , str(os.path.basename(nc_file)))
-    cmd += '%s/%s & ' %(complete_output_folder, str(os.path.basename(nc_file)))
+    cmd += output_file + " & "
+    
 cmd     += 'wait'
 print cmd
-#~ os.system(cmd)
+os.system(cmd)
 
 
 #~ ../1984_to_1999/totalWaterStorageThickness_annuaAvg_output.nc \
