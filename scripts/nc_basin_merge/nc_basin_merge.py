@@ -380,7 +380,6 @@ except:
 
 # the annual files
 netcdfList = [
-'discharge_annuaAvg_output.nc',
 'snowCoverSWE_annuaAvg_output.nc',
 'snowFreeWater_annuaAvg_output.nc',
 'interceptStor_annuaAvg_output.nc',
@@ -388,17 +387,29 @@ netcdfList = [
 'storUppTotal_annuaAvg_output.nc',
 'storLowTotal_annuaAvg_output.nc',
 'storGroundwater_annuaAvg_output.nc',
-'surfaceWaterStorage_annuaAvg_output.nc'
+'surfaceWaterStorage_annuaAvg_output.nc',
+'irrGrossDemand_annuaTot_output.nc',
+'nonIrrGrossDemand_annuaTot_output.nc',
+'totalRunoff_annuaTot_output.nc',
+'totalEvaporation_annuaTot_output.nc'
 ]
 
 # the monthly files
 if list_type == "monthly":\
 	netcdfList = [
+		'snowCoverSWE_monthAvg_output.nc',
+		'snowFreeWater_monthAvg_output.nc',
+		'interceptStor_monthAvg_output.nc',
+		'topWaterLayer_monthAvg_output.nc',
+		'storUppTotal_monthAvg_output.nc',
+		'storLowTotal_monthAvg_output.nc',
+		'storGroundwater_monthAvg_output.nc',
+		'surfaceWaterStorage_monthAvg_output.nc',
 		'discharge_monthAvg_output.nc',
 		'totalGroundwaterAbstraction_monthTot_output.nc',
-		'snowCoverSWE_monthAvg_output.nc',
-		'storGroundwater_monthAvg_output.nc',
-		'surfacesWaterStorage_monthAvg_output.nc']
+		'gwRecharge_monthTot_output.nc',
+		'precipitation_monthTot_output.nc'
+		]
 
 for i in netcdfList:print i
 
