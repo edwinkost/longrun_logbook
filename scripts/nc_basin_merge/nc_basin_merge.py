@@ -395,7 +395,7 @@ netcdfList = [
 ]
 
 # the monthly files
-if list_type == "monthly":\
+if list_type == "monthly_12":\
 	netcdfList = [
 		'snowCoverSWE_monthAvg_output.nc',
 		'snowFreeWater_monthAvg_output.nc',
@@ -412,7 +412,7 @@ if list_type == "monthly":\
 		]
 
 # the monthly files
-if list_type == "monthly":\
+if list_type == "monthly_16":\
 	netcdfList = [
 		'totalWaterStorageThickness_monthAvg_output.nc',
 		'discharge_monthAvg_output.nc',
