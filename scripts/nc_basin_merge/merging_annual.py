@@ -129,6 +129,10 @@ os.system(cmd)
 
 # calculate annual average of TWS
 cmd = ''; print cmd
+cmd = 'cdo add %s/snowCoverSWE_annuaAvg_output.nc %s/snowFreeWater_annuaAvg_output.nc %s/snowCoverSWE_snowFreeWater_annuaAvg.nc' %(complete_output_folder, complete_output_folder, complete_output_folder)
+print cmd
+os.system(cmd)
+cmd = ''; print cmd
 cmd = 'cdo add %s/snowCoverSWE_snowFreeWater_annuaAvg.nc %s/interceptStor_annuaAvg_output.nc %s/snowCoverSWE_snowFreeWater_interceptStor_annuaAvg.nc' %(complete_output_folder, complete_output_folder, complete_output_folder)
 print cmd
 os.system(cmd)
