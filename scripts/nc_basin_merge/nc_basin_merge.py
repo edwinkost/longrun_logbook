@@ -359,11 +359,13 @@ except:
 	pass	
 
 # starting and end dates
-startDate    = None            # 
-endDate      = None            # 
+startDate = None 
+endDate = None 
 try:
 	startDate    = str(sys.argv[4]) 
 	endDate      = str(sys.argv[5])
+	if startDate == "None": startDate = None
+    if endDate == "None": endDate = None
 except:
 	pass
 
