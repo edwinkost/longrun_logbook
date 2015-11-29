@@ -409,6 +409,28 @@ if list_type == "monthly":\
 		'precipitation_monthTot_output.nc'
 		]
 
+# the monthly files
+if list_type == "monthly":\
+	netcdfList = [
+		'totalWaterStorageThickness_monthAvg_output.nc',
+		'discharge_monthAvg_output.nc',
+		'totalGroundwaterAbstraction_monthTot_output.nc',
+		'gwRecharge_monthTot_output.nc',
+        'totalRunoff_monthTot_output.nc',
+		'snowCoverSWE_monthAvg_output.nc',
+		'snowFreeWater_monthAvg_output.nc',
+		'interceptStor_monthAvg_output.nc',
+		'topWaterLayer_monthAvg_output.nc',
+		'storUppTotal_monthAvg_output.nc',
+		'storLowTotal_monthAvg_output.nc',
+		'storGroundwater_monthAvg_output.nc',
+		'surfaceWaterStorage_monthAvg_output.nc',
+		'totalEvaporation_monthTot_output.nc',
+		'precipitation_monthTot_output.nc',
+		'waterBodyActEvaporation_monthTot_output.nc'
+		]
+
+
 for i in netcdfList:print i
 
 ncores = min(len(netcdfList), max_number_of_cores)
