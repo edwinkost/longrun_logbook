@@ -365,7 +365,7 @@ try:
 	startDate    = str(sys.argv[4]) 
 	endDate      = str(sys.argv[5])
 	if startDate == "None": startDate = None
-    if endDate == "None": endDate = None
+	if endDate == "None": endDate = None
 except:
 	pass
 
