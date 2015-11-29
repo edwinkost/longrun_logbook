@@ -378,7 +378,7 @@ except:
 
 #- main script
 
-# the annual files
+# the annual files (default)
 netcdfList = [
 'snowCoverSWE_annuaAvg_output.nc',
 'snowFreeWater_annuaAvg_output.nc',
