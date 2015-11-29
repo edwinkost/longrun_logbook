@@ -159,17 +159,17 @@ print cmd
 os.system(cmd)
 
 # renaming variable names
-cmd = 'ncrename -v snow_water_equivalent,TWS %s/snowCoverSWE_snowFreeWater_monthAvg.nc' %(complete_output_folder)
+cmd = 'ncrename -v snow_water_equivalent,snowCoverSWE_snowFreeWater %s/snowCoverSWE_snowFreeWater_monthAvg.nc' %(complete_output_folder)
 print cmd; os.system(cmd)
-cmd = 'ncrename -v snow_water_equivalent,TWS %s/nowCoverSWE_snowFreeWater_interceptStor_monthAvg.nc' %(complete_output_folder)
+cmd = 'ncrename -v snow_water_equivalent,snowCoverSWE_snowFreeWater_interceptStor_monthAvg %s/snowCoverSWE_snowFreeWater_interceptStor_monthAvg.nc' %(complete_output_folder)
 print cmd; os.system(cmd)
-cmd = 'ncrename -v snow_water_equivalent,TWS %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_monthAvg.nc' %(complete_output_folder)
+cmd = 'ncrename -v snow_water_equivalent,snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_monthAvg.nc' %(complete_output_folder)
 print cmd; os.system(cmd)
-cmd = 'ncrename -v snow_water_equivalent,TWS %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_monthAvg.nc' %(complete_output_folder)
+cmd = 'ncrename -v snow_water_equivalent,snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_monthAvg.nc' %(complete_output_folder)
 print cmd; os.system(cmd)
-cmd = 'ncrename -v snow_water_equivalent,TWS %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_monthAvg.nc' %(complete_output_folder)
+cmd = 'ncrename -v snow_water_equivalent,snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_monthAvg.nc' %(complete_output_folder)
 print cmd; os.system(cmd)
-cmd = 'ncrename -v snow_water_equivalent,TWS %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_surfaceWaterStorage_monthAvg.nc' %(complete_output_folder)
+cmd = 'ncrename -v snow_water_equivalent,snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_surfaceWaterStorage %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_surfaceWaterStorage_monthAvg.nc' %(complete_output_folder)
 print cmd; os.system(cmd)
 
 # the TWS
