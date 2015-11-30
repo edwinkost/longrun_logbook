@@ -380,6 +380,7 @@ except:
 
 # the annual files (default)
 netcdfList = [
+'totalWaterStorageThickness_annuaAvg_output.nc',
 'snowCoverSWE_annuaAvg_output.nc',
 'snowFreeWater_annuaAvg_output.nc',
 'interceptStor_annuaAvg_output.nc',
@@ -391,7 +392,8 @@ netcdfList = [
 'irrGrossDemand_annuaTot_output.nc',
 'nonIrrGrossDemand_annuaTot_output.nc',
 'totalRunoff_annuaTot_output.nc',
-'totalEvaporation_annuaTot_output.nc'
+'totalEvaporation_annuaTot_output.nc',
+'discharge_annuaAvg_output.nc'
 ]
 
 # the monthly files
@@ -432,6 +434,9 @@ if list_type == "monthly_16":\
 		'waterBodyActEvaporation_monthTot_output.nc'
 		]
 
+# the monthly files
+if list_type == "selected":\
+	netcdfList = [str(sys.argv[7])]
 
 for i in netcdfList:print i
 

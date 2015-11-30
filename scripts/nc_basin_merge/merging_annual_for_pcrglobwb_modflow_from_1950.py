@@ -29,6 +29,8 @@ num_of_cores = 4
 cmd = 'mkdir '+str(output_folder)
 os.system(cmd)
 
+# TODO: copying the script 'nc_basin_merge.py' to the output_folder and change the working directory to the output_folder (such that the 'nc_basin_merge.py' will not be affected by any changes)
+
 # merging annual resolution over areas
 cmd = ''; print cmd
 for i_year in range(0, len(year_int)-1):
