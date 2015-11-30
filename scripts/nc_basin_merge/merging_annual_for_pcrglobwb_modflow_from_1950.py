@@ -165,7 +165,7 @@ os.system(cmd)
 # renaming variable names
 cmd = 'ncrename -v snow_water_equivalent,snowCoverSWE_snowFreeWater %s/snowCoverSWE_snowFreeWater_annuaAvg.nc' %(complete_output_folder)
 print cmd; os.system(cmd)
-cmd = 'ncrename -v snow_water_equivalent,snowCoverSWE_snowFreeWater_interceptStor_annuaAvg %s/snowCoverSWE_snowFreeWater_interceptStor_annuaAvg.nc' %(complete_output_folder)
+cmd = 'ncrename -v snow_water_equivalent,snowCoverSWE_snowFreeWater_interceptStor %s/snowCoverSWE_snowFreeWater_interceptStor_annuaAvg.nc' %(complete_output_folder)
 print cmd; os.system(cmd)
 cmd = 'ncrename -v snow_water_equivalent,snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_annuaAvg.nc' %(complete_output_folder)
 print cmd; os.system(cmd)
