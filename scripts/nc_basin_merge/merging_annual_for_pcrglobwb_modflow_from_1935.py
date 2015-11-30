@@ -24,7 +24,7 @@ input_folder = [
 ]
 
 # maximum number of cores used per command lines
-num_of_cores = 4
+num_of_cores = 5
 
 # preparing output folder
 cmd = 'mkdir '+str(output_folder)
