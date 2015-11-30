@@ -12,7 +12,7 @@ year_int  = [1950, 1972, 1984, 2000]
 last_year = 2010
 
 # specific file name for output TWS file
-tws_filename = None
+tws_filename = "TWS_monthly.nc"
 
 # input folders (the sequence must be consistent with the list 'year_int'
 input_folder = [
@@ -23,7 +23,7 @@ input_folder = [
 ]
 
 # maximum number of cores used per command lines
-num_of_cores = 2
+num_of_cores = 4
 
 # preparing output folder
 cmd = 'mkdir '+str(output_folder)
@@ -55,7 +55,7 @@ for nc_file in pcrglobwb_netcdf_list:
     # output file
     output_file = ''
     output_file = '%s/%s' %(complete_output_folder, str(os.path.basename(nc_file)))
-    if os.path.exists(output_file): os.remove(output_file)
+    #~ if os.path.exists(output_file): os.remove(output_file)              # we don't have to delete files (it will overwrite them)
     
     # command line for merging
     cmd += 'cdo mergetime '
@@ -79,28 +79,24 @@ modflow_netcdf_list = [
 'groundwaterVolumeEstimate_monthEnd_output.nc'
 ]
 
-# modflow_netcdf_list = [
-# 'groundwaterDepthLayer1_monthEnd_output.nc']
-
-# first, we have to select the proper years and calculate their yearly average values
+# first, we have to select the proper years
 cmd = ''; print cmd
 for nc_file in modflow_netcdf_list:
     
-    # delete output files if they are exists
-    for i_year in range(0, len(year_int)-1):
-        output_file = '%s/%i_to_%i/%s' %(output_folder, year_int[i_year],          year_int[i_year+1]-1, nc_file)
-        if os.path.exists(output_file): os.remove(output_file)
-    output_file     = '%s/%i_to_%i/%s' %(output_folder, year_int[len(year_int)-1], last_year,            nc_file)
-    if os.path.exists(output_file): os.remove(output_file)        
-
     # command lines for selecting years
     for i_year in range(0, len(year_int)-1):
-        cmd += 'cdo selyear,%i/%i %s/modflow/transient/netcdf/%s ' %(year_int[i_year],          year_int[i_year+1]-1, input_folder[i_year]         , nc_file)
         output_file = '%s/%i_to_%i/%s' %(output_folder, year_int[i_year],          year_int[i_year+1]-1, nc_file)
-        cmd += output_file + " & "
-    cmd     += 'cdo selyear,%i/%i %s/modflow/transient/netcdf/%s ' %(year_int[len(year_int)-1], last_year,            input_folder[len(year_int)-1], nc_file)    
+        if os.path.exists(output_file):
+            cmd += ''
+        else:
+            cmd += 'cdo selyear,%i/%i %s/modflow/transient/netcdf/%s ' %(year_int[i_year],          year_int[i_year+1]-1, input_folder[i_year]         , nc_file)
+            cmd += output_file + " & "
     output_file = '%s/%i_to_%i/%s'     %(output_folder, year_int[len(year_int)-1], last_year,            nc_file)
-    cmd += output_file + " & "
+    if os.path.exists(output_file):
+        cmd += ''
+    else:    
+        cmd     += 'cdo selyear,%i/%i %s/modflow/transient/netcdf/%s ' %(year_int[len(year_int)-1], last_year,            input_folder[len(year_int)-1], nc_file)    
+        cmd     += output_file + " & "
 cmd     += 'wait'
 print cmd
 os.system(cmd)
@@ -112,7 +108,7 @@ for nc_file in modflow_netcdf_list:
     
     # output file
     output_file = '%s/%s' %(complete_output_folder, nc_file)
-    if os.path.exists(output_file): os.remove(output_file)
+    #~ if os.path.exists(output_file): os.remove(output_file)
     
     # command line for merging
     cmd += 'cdo mergetime '
@@ -124,12 +120,11 @@ cmd     += 'wait'
 print cmd
 os.system(cmd)
 
-# adding monthly storage values to get TWS
+# calculate monthly average of TWS
 cmd = ''; print cmd
 cmd = 'cdo add %s/snowCoverSWE_monthAvg_output.nc %s/snowFreeWater_monthAvg_output.nc %s/snowCoverSWE_snowFreeWater_monthAvg.nc' %(complete_output_folder, complete_output_folder, complete_output_folder)
 print cmd
 os.system(cmd)
-
 cmd = ''; print cmd
 cmd = 'cdo add %s/snowCoverSWE_snowFreeWater_monthAvg.nc %s/interceptStor_monthAvg_output.nc %s/snowCoverSWE_snowFreeWater_interceptStor_monthAvg.nc' %(complete_output_folder, complete_output_folder, complete_output_folder)
 print cmd
@@ -154,7 +149,7 @@ os.system(cmd)
 # the TWS
 if tws_filename == None: tws_filename = "TWS.nc"
 cmd = ''; print cmd
-cmd = 'cdo add %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_surfaceWaterStorage_monthAvg.nc %s/groundwaterThicknessEstimate_monthAvg_output.nc %s/%s' %(complete_output_folder, complete_output_folder, complete_output_folder, tws_filename)
+cmd = 'cdo add %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_surfaceWaterStorage_monthAvg.nc %s/groundwaterThicknessEstimate_monthEnd_output.nc %s/%s' %(complete_output_folder, complete_output_folder, complete_output_folder, tws_filename)
 print cmd
 os.system(cmd)
 
@@ -175,6 +170,6 @@ print cmd; os.system(cmd)
 # the TWS
 if tws_filename == None: tws_filename = None
 cmd = ''; print cmd
-cmd = 'ncrename -v snow_water_equivalent,TWS %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_surfaceWaterStorage_monthAvg.nc %s/groundwaterThicknessEstimate_monthAvg_output.nc %s/%s' %(complete_output_folder, complete_output_folder, complete_output_folder, tws_filename)
+cmd = 'ncrename -v snow_water_equivalent,TWS %s/%s' %(complete_output_folder, tws_filename)
 print cmd
 os.system(cmd)
