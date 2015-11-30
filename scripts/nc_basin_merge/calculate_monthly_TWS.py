@@ -44,7 +44,7 @@ os.system(cmd)
 # the TWS
 if tws_filename == None: tws_filename = "TWS.nc"
 cmd = ''; print cmd
-cmd = 'cdo add %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_surfaceWaterStorage_monthAvg.nc %s/groundwaterThicknessEstimate_monthAvg_output.nc %s/%s' %(folder, folder, folder, tws_filename)
+cmd = 'cdo add %s/snowCoverSWE_snowFreeWater_interceptStor_topWaterLayer_storUppTotal_storLowTotal_surfaceWaterStorage_monthAvg.nc %s/groundwaterThicknessEstimate_monthEnd_output.nc %s/%s' %(folder, folder, folder, tws_filename)
 print cmd
 os.system(cmd)
 
