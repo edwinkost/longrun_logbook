@@ -380,7 +380,6 @@ except:
 
 # the annual files (default)
 netcdfList = [
-'totalWaterStorageThickness_annuaAvg_output.nc',
 'snowCoverSWE_annuaAvg_output.nc',
 'snowFreeWater_annuaAvg_output.nc',
 'interceptStor_annuaAvg_output.nc',
