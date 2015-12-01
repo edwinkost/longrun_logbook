@@ -32,7 +32,7 @@ TWS[i] = sum(ncvar_get(tws_file, "total_thickness_of_water_storage")[,,i], na.rm
 SWT[i] = sum(ncvar_get(swt_file, "surface_water_storage")[,,i], na.rm = T)
 SNW[i] = sum(ncvar_get(snw_file, "snow_water_equivalent")[,,i], na.rm = T)
 SNF[i] = sum(ncvar_get(snf_file, "snow_free_water")[,,i], na.rm = T)
-INT[i] = sum(ncvar_get(int_file, "interceptiom_storage")[,,i], na.rm = T)
+INT[i] = sum(ncvar_get(int_file, "interception_storage")[,,i], na.rm = T)
 TOP[i] = sum(ncvar_get(top_file, "top_water_layer")[,,i], na.rm = T)
 UPP[i] = sum(ncvar_get(upp_file, "upper_soil_storage")[,,i], na.rm = T)
 LOW[i] = sum(ncvar_get(low_file, "lower_soil_storage")[,,i], na.rm = T)
