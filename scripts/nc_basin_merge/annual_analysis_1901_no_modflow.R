@@ -1,17 +1,17 @@
 
 require(ncdf4)
 
-tws_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1950/1950_to_2010/TWS.nc")
-swt_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1950/1950_to_2010/surfaceWaterStorage_annuaAvg_output.nc")
-snw_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1950/1950_to_2010/snowCoverSWE_annuaAvg_output.nc")
-snf_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1950/1950_to_2010/snowFreeWater_annuaAvg_output.nc")
-int_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1950/1950_to_2010/interceptStor_annuaAvg_output.nc")
-top_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1950/1950_to_2010/topWaterLayer_annuaAvg_output.nc")
-upp_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1950/1950_to_2010/storUppTotal_annuaAvg_output.nc")
-low_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1950/1950_to_2010/storLowTotal_annuaAvg_output.nc")
-gwt_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1950/1950_to_2010/groundwaterThicknessEstimate_annuaAvg_output.nc")
+tws_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/totalWaterStorageThickness_annuaAvg_output.nc")
+swt_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/surfaceWaterStorage_annuaAvg_output.nc")
+snw_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/snowCoverSWE_annuaAvg_output.nc")
+snf_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/snowFreeWater_annuaAvg_output.nc")
+int_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/interceptStor_annuaAvg_output.nc")
+top_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/topWaterLayer_annuaAvg_output.nc")
+upp_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/storUppTotal_annuaAvg_output.nc")
+low_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/storLowTotal_annuaAvg_output.nc")
+gwt_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/storGroundwater_annuaAvg_output.nc")
 
-starting_year = 1950
+starting_year = 1901
 
 time = ncvar_get(tws_file, "time")
 
@@ -39,7 +39,7 @@ INT_field = ncvar_get(int_file, "interception_storage"            , c(1, 1, i), 
 TOP_field = ncvar_get(top_file, "top_water_layer"                 , c(1, 1, i), c(-1, -1, 1))
 UPP_field = ncvar_get(upp_file, "upper_soil_storage"              , c(1, 1, i), c(-1, -1, 1))
 LOW_field = ncvar_get(low_file, "lower_soil_storage"              , c(1, 1, i), c(-1, -1, 1))
-GWT_field = ncvar_get(gwt_file, "groundwater_thickness_estimate"  , c(1, 1, i), c(-1, -1, 1))
+GWT_field = ncvar_get(gwt_file, "groundwater_storage"             , c(1, 1, i), c(-1, -1, 1))
 
 # ignore zero values for surface water storage 
 SWT_field[which(SWT_field < 0.0)] = 0.0
@@ -65,11 +65,14 @@ print(paste("UPP : ",UPP[i]))
 print(paste("LOW : ",LOW[i]))
 print(paste("GWT : ",GWT[i]))
 
+print(paste("GWTotal : ", TWS[i] - SWT[i] - SNW[i] - SNF[i] - INT[i] - TOP[i] - UPP[i] - LOW[i]))
+
+
 print("")
 
 }
 
-correct_TWS = SWT + SNW + SNF + INT + TOP + UPP + LOW + GWT
+correct_TWS = TWS
 
 year = starting_year-1+seq(1,length(time),1)
 
