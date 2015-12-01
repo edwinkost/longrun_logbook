@@ -13,7 +13,7 @@ gwt_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merge
 
 starting_year = 1950
 
-time = ncvar_get(tws, "time")
+time = ncvar_get(tws_file, "time")
 
 TWS = rep(NA, length(time))
 SWT = rep(NA, length(time))
@@ -25,18 +25,34 @@ UPP = rep(NA, length(time))
 LOW = rep(NA, length(time))
 GWT = rep(NA, length(time))
 
+cell_area_file = nc_open("/home/edwin/data/cell_area_nc/cellsize05min.correct.used.nc")
+cell_area = ncvar_get(cell_area_file, "Band1")[,]
+nc_close(cell_area_file)
+
 for (i in 1:length(time)){
 
+TWS_field = ncvar_get(tws_file, "total_thickness_of_water_storage", c(1, 1, i), c(-1, -1, 1))
+SWT_field = ncvar_get(swt_file, "surface_water_storage"           , c(1, 1, i), c(-1, -1, 1))
+SNW_field = ncvar_get(snw_file, "snow_water_equivalent"           , c(1, 1, i), c(-1, -1, 1))
+SNF_field = ncvar_get(snf_file, "snow_free_water"                 , c(1, 1, i), c(-1, -1, 1))
+INT_field = ncvar_get(int_file, "interception_storage"            , c(1, 1, i), c(-1, -1, 1))
+TOP_field = ncvar_get(top_file, "top_water_layer"                 , c(1, 1, i), c(-1, -1, 1))
+UPP_field = ncvar_get(upp_file, "upper_soil_storage"              , c(1, 1, i), c(-1, -1, 1))
+LOW_field = ncvar_get(low_file, "lower_soil_storage"              , c(1, 1, i), c(-1, -1, 1))
+GWT_field = ncvar_get(gwt_file, "groundwater_thickness_estimate"  , c(1, 1, i), c(-1, -1, 1))
 
-TWS[i] = sum(ncvar_get(tws_file, "total_thickness_of_water_storage")[,,i], na.rm = T)
-SWT[i] = sum(ncvar_get(swt_file, "surface_water_storage")[,,i], na.rm = T)
-SNW[i] = sum(ncvar_get(snw_file, "snow_water_equivalent")[,,i], na.rm = T)
-SNF[i] = sum(ncvar_get(snf_file, "snow_free_water")[,,i], na.rm = T)
-INT[i] = sum(ncvar_get(int_file, "interception_storage")[,,i], na.rm = T)
-TOP[i] = sum(ncvar_get(top_file, "top_water_layer")[,,i], na.rm = T)
-UPP[i] = sum(ncvar_get(upp_file, "upper_soil_storage")[,,i], na.rm = T)
-LOW[i] = sum(ncvar_get(low_file, "lower_soil_storage")[,,i], na.rm = T)
-GWT[i] = sum(ncvar_get(gwt_file, "groundwater_thickness_estimate")[,,i], na.rm = T)
+# ignore zero values
+SWT_field[which(SWT_field < 0.0)] = 0.0
+
+TWS[i] = sum( TWS_field  * cell_area, na.rm = T)
+SWT[i] = sum( SWT_field  * cell_area, na.rm = T)
+SNW[i] = sum( SNW_field  * cell_area, na.rm = T)
+SNF[i] = sum( SNF_field  * cell_area, na.rm = T)
+INT[i] = sum( INT_field  * cell_area, na.rm = T)
+TOP[i] = sum( TOP_field  * cell_area, na.rm = T)
+UPP[i] = sum( UPP_field  * cell_area, na.rm = T)
+LOW[i] = sum( LOW_field  * cell_area, na.rm = T)
+GWT[i] = sum( GWT_field  * cell_area, na.rm = T)
 
 print(i)
 print(paste("TWS : ",TWS[i]))
@@ -52,6 +68,7 @@ print(paste("GWT : ",GWT[i]))
 print("")
 
 }
+
 
 year = starting_year-1+seq(1,length(time),1)
 
