@@ -55,6 +55,7 @@ LOW[i] = sum( LOW_field  * cell_area, na.rm = T)
 GWT[i] = sum( GWT_field  * cell_area, na.rm = T)
 
 print(i)
+print(year[i])
 #~ print(paste("TWS : ",TWS[i]))
 print(paste("SWT : ",SWT[i]))
 print(paste("SNW : ",SNW[i]))
