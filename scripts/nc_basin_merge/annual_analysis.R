@@ -5,6 +5,8 @@ tws = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcr
 swt = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/surfaceWaterStorage_annuaAvg_output.nc")
 snw = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/snowCoverSWE_annuaAvg_output.nc")
 
+starting_year = 1901
+
 time = ncvar_get(tws, "time")
 
 TWS = rep(NA, length(time))
@@ -29,4 +31,9 @@ print(SNW[i])
 
 }
 
-plot(1950+seq(1,length(time),1), TWS)
+year = starting_year-1+seq(1,length(time),1)
+
+plot(year, TWS)
+lines(year, TWS)
+
+
