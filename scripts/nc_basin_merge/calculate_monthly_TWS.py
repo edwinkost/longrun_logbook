@@ -65,6 +65,6 @@ print cmd; os.system(cmd)
 # the TWS
 if tws_filename == None: tws_filename = None
 cmd = ''; print cmd
-cmd = 'ncrename -v snow_water_equivalent,TWS %s/%s' %(folder, tws_filename)
+cmd = 'ncrename -v snow_water_equivalent,total_thickness_of_water_storage %s/%s' %(folder, tws_filename)
 print cmd
 os.system(cmd)
