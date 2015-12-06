@@ -8,7 +8,7 @@ import glob
 output_folder          = '/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/'
 
 # interval for years:
-year_int  = [1920, 1933, 1955, 1969, 1989]
+year_int  = [1901, 1920, 1933, 1955, 1969, 1989]
 last_year = 2010
 
 # specific file name for output TWS file
