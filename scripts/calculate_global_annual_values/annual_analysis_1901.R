@@ -14,6 +14,9 @@ upp_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merge
 low_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/storLowTotal_annuaAvg_output.nc")
 gwt_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/groundwaterThicknessEstimate_annuaAvg_output.nc")
 
+gwa_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/totalGroundwaterAbstraction_annuaTot_output.nc")
+rch_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/gwRecharge_annuaTot_output.nc")
+
 starting_year = 1901
 
 # time values 
