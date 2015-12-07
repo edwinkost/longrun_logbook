@@ -56,7 +56,7 @@ GWT_field = ncvar_get(gwt_file, "groundwater_thickness_estimate"  , c(1, 1, i), 
 
 # ignore zero values for some stores 
 SWT_field[which(SWT_field < 0.0)] = 0.0
-RUN_field[which(RUN_field < 0.0)] = 0.0
+#~ RUN_field[which(RUN_field < 0.0)] = 0.0
 
 #~ GWT_field[which(GWT_field < 0.0)] = 0.0
 
