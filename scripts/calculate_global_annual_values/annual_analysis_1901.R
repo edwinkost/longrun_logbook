@@ -62,7 +62,7 @@ LOW_field = ncvar_get(low_file, "lower_soil_storage"              , c(1, 1, i), 
 GWT_field = ncvar_get(gwt_file, "groundwater_thickness_estimate"  , c(1, 1, i), c(-1, -1, 1))
 
 GWA_field = ncvar_get(gwa_file, "total_groundwater_abstraction"   , c(1, 1, i), c(-1, -1, 1))
-RCH_field = ncvar_get(gwa_file, "groundwater_recharge"            , c(1, 1, i), c(-1, -1, 1))
+RCH_field = ncvar_get(rch_file, "groundwater_recharge"            , c(1, 1, i), c(-1, -1, 1))
 
 # ignore zero values for some stores 
 SWT_field[which(SWT_field < 0.0)] = 0.0
