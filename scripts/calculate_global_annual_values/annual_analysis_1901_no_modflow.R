@@ -1,21 +1,21 @@
 
 require(ncdf4)
 
-pre_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/precipitation_annuaTot_output.nc")
-eva_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/totalEvaporation_annuaTot_output.nc")
-run_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/totalRunoff_annuaTot_output.nc")
+pre_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/precipitation_annuaTot_output.nc")
+eva_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/totalEvaporation_annuaTot_output.nc")
+run_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/totalRunoff_annuaTot_output.nc")
 
-swt_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/surfaceWaterStorage_annuaAvg_output.nc")
-snw_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/snowCoverSWE_annuaAvg_output.nc")
-snf_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/snowFreeWater_annuaAvg_output.nc")
-int_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/interceptStor_annuaAvg_output.nc")
-top_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/topWaterLayer_annuaAvg_output.nc")
-upp_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/storUppTotal_annuaAvg_output.nc")
-low_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/storLowTotal_annuaAvg_output.nc")
-gwt_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/groundwaterThicknessEstimate_annuaAvg_output.nc")
+swt_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/surfaceWaterStorage_annuaAvg_output.nc")
+snw_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/snowCoverSWE_annuaAvg_output.nc")
+snf_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/snowFreeWater_annuaAvg_output.nc")
+int_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/interceptStor_annuaAvg_output.nc")
+top_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/topWaterLayer_annuaAvg_output.nc")
+upp_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/storUppTotal_annuaAvg_output.nc")
+low_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/storLowTotal_annuaAvg_output.nc")
+gwt_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/groundwaterThicknessEstimate_annuaAvg_output.nc")
 
-gwa_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/totalGroundwaterAbstraction_annuaTot_output.nc")
-rch_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/gwRecharge_annuaTot_output.nc")
+gwa_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/totalGroundwaterAbstraction_annuaTot_output.nc")
+rch_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_only_from_1901/1901_to_2010/gwRecharge_annuaTot_output.nc")
 
 starting_year = 1901
 
