@@ -443,8 +443,7 @@ if list_type == "selected_monthly":\
 		'discharge_monthAvg_output.nc',
 		'totalGroundwaterAbstraction_monthTot_output.nc',
 		'gwRecharge_monthTot_output.nc',
-        'totalRunoff_monthTot_output.nc',
-		'waterBodyActEvaporation_monthTot_output.nc']
+        'totalRunoff_monthTot_output.nc']
 
 for i in netcdfList:print i
 

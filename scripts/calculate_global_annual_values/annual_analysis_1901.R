@@ -1,6 +1,7 @@
 
 require(ncdf4)
 
+pre_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/precipitation_annuaTot_output.nc")
 swt_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/surfaceWaterStorage_annuaAvg_output.nc")
 snw_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/snowCoverSWE_annuaAvg_output.nc")
 snf_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/snowFreeWater_annuaAvg_output.nc")
@@ -18,6 +19,7 @@ time = ncvar_get(swt_file, "time")
 # years used in the model
 year = seq(starting_year, 2010, 1)
 
+PRE = rep(NA, length(time))
 SWT = rep(NA, length(time))
 SNW = rep(NA, length(time))
 SNF = rep(NA, length(time))
@@ -33,6 +35,7 @@ nc_close(cell_area_file)
 
 for (i in 1:length(time)){
 
+PRE_field = ncvar_get(swt_file, "precipitation"                   , c(1, 1, i), c(-1, -1, 1))
 SWT_field = ncvar_get(swt_file, "surface_water_storage"           , c(1, 1, i), c(-1, -1, 1))
 SNW_field = ncvar_get(snw_file, "snow_water_equivalent"           , c(1, 1, i), c(-1, -1, 1))
 SNF_field = ncvar_get(snf_file, "snow_free_water"                 , c(1, 1, i), c(-1, -1, 1))
