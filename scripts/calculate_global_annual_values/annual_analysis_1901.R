@@ -38,6 +38,10 @@ UPP = rep(NA, length(time))
 LOW = rep(NA, length(time))
 GWT = rep(NA, length(time))
 
+GWA = rep(NA, length(time))
+RCH = rep(NA, length(time))
+
+# cell area 
 cell_area_file = nc_open("/home/edwin/data/cell_area_nc/cellsize05min.correct.used.nc")
 cell_area = ncvar_get(cell_area_file, "Band1")[,]
 nc_close(cell_area_file)
@@ -57,6 +61,9 @@ UPP_field = ncvar_get(upp_file, "upper_soil_storage"              , c(1, 1, i), 
 LOW_field = ncvar_get(low_file, "lower_soil_storage"              , c(1, 1, i), c(-1, -1, 1))
 GWT_field = ncvar_get(gwt_file, "groundwater_thickness_estimate"  , c(1, 1, i), c(-1, -1, 1))
 
+GWA_field = ncvar_get(gwa_file, "total_groundwater_abstraction"   , c(1, 1, i), c(-1, -1, 1))
+RCH_field = ncvar_get(gwa_file, "groundwater_recharge"            , c(1, 1, i), c(-1, -1, 1))
+
 # ignore zero values for some stores 
 SWT_field[which(SWT_field < 0.0)] = 0.0
 #~ RUN_field[which(RUN_field < 0.0)] = 0.0
@@ -64,18 +71,19 @@ SWT_field[which(SWT_field < 0.0)] = 0.0
 #~ GWT_field[which(GWT_field < 0.0)] = 0.0
 
 #~ TWS[i] = sum( TWS_field  * cell_area, na.rm = T)
-PRE[i] = sum( PRE_field  * cell_area, na.rm = T)
-EVA[i] = sum( EVA_field  * cell_area, na.rm = T)
-RUN[i] = sum( RUN_field  * cell_area, na.rm = T)
-
-SWT[i] = sum( SWT_field  * cell_area, na.rm = T)
-SNW[i] = sum( SNW_field  * cell_area, na.rm = T)
-SNF[i] = sum( SNF_field  * cell_area, na.rm = T)
-INT[i] = sum( INT_field  * cell_area, na.rm = T)
-TOP[i] = sum( TOP_field  * cell_area, na.rm = T)
-UPP[i] = sum( UPP_field  * cell_area, na.rm = T)
-LOW[i] = sum( LOW_field  * cell_area, na.rm = T)
-GWT[i] = sum( GWT_field  * cell_area, na.rm = T)
+PRE[i] = sum( PRE_field  * cell_area, na.rm = T)/10^9
+EVA[i] = sum( EVA_field  * cell_area, na.rm = T)/10^9
+RUN[i] = sum( RUN_field  * cell_area, na.rm = T)/10^9
+SWT[i] = sum( SWT_field  * cell_area, na.rm = T)/10^9
+SNW[i] = sum( SNW_field  * cell_area, na.rm = T)/10^9
+SNF[i] = sum( SNF_field  * cell_area, na.rm = T)/10^9
+INT[i] = sum( INT_field  * cell_area, na.rm = T)/10^9
+TOP[i] = sum( TOP_field  * cell_area, na.rm = T)/10^9
+UPP[i] = sum( UPP_field  * cell_area, na.rm = T)/10^9
+LOW[i] = sum( LOW_field  * cell_area, na.rm = T)/10^9
+GWT[i] = sum( GWT_field  * cell_area, na.rm = T)/10^9
+GWA[i] = sum( GWA_field  * cell_area, na.rm = T)/10^9
+RCH[i] = sum( RCH_field  * cell_area, na.rm = T)/10^9
 
 print(i)
 print(year[i])
