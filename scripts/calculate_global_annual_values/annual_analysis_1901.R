@@ -2,6 +2,9 @@
 require(ncdf4)
 
 pre_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/precipitation_annuaTot_output.nc")
+eva_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/totalEvaporation_annuaTot_output.nc")
+run_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/totalRunoff_annuaTot_output.nc")
+
 swt_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/surfaceWaterStorage_annuaAvg_output.nc")
 snw_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/snowCoverSWE_annuaAvg_output.nc")
 snf_file = nc_open("/projects/0/dfguu/users/edwin/05min_runs_november_2015_merged/pcrglobwb_modflow_from_1901/1901_to_2010/snowFreeWater_annuaAvg_output.nc")
@@ -20,6 +23,9 @@ time = ncvar_get(swt_file, "time")
 year = seq(starting_year, 2010, 1)
 
 PRE = rep(NA, length(time))
+EVA = rep(NA, length(time))
+RUN = rep(NA, length(time))
+
 SWT = rep(NA, length(time))
 SNW = rep(NA, length(time))
 SNF = rep(NA, length(time))
@@ -35,7 +41,10 @@ nc_close(cell_area_file)
 
 for (i in 1:length(time)){
 
-PRE_field = ncvar_get(swt_file, "precipitation"                   , c(1, 1, i), c(-1, -1, 1))
+PRE_field = ncvar_get(pre_file, "precipitation"                   , c(1, 1, i), c(-1, -1, 1))
+EVA_field = ncvar_get(eva_file, "total_evaporation"               , c(1, 1, i), c(-1, -1, 1))
+RUN_field = ncvar_get(run_file, "total_runoff"                    , c(1, 1, i), c(-1, -1, 1))
+
 SWT_field = ncvar_get(swt_file, "surface_water_storage"           , c(1, 1, i), c(-1, -1, 1))
 SNW_field = ncvar_get(snw_file, "snow_water_equivalent"           , c(1, 1, i), c(-1, -1, 1))
 SNF_field = ncvar_get(snf_file, "snow_free_water"                 , c(1, 1, i), c(-1, -1, 1))
@@ -47,9 +56,15 @@ GWT_field = ncvar_get(gwt_file, "groundwater_thickness_estimate"  , c(1, 1, i), 
 
 # ignore zero values for some stores 
 SWT_field[which(SWT_field < 0.0)] = 0.0
+RUN_field[which(RUN_field < 0.0)] = 0.0
+
 #~ GWT_field[which(GWT_field < 0.0)] = 0.0
 
 #~ TWS[i] = sum( TWS_field  * cell_area, na.rm = T)
+PRE[i] = sum( PRE_field  * cell_area, na.rm = T)
+EVA[i] = sum( EVA_field  * cell_area, na.rm = T)
+RUN[i] = sum( RUN_field  * cell_area, na.rm = T)
+
 SWT[i] = sum( SWT_field  * cell_area, na.rm = T)
 SNW[i] = sum( SNW_field  * cell_area, na.rm = T)
 SNF[i] = sum( SNF_field  * cell_area, na.rm = T)
@@ -61,6 +76,10 @@ GWT[i] = sum( GWT_field  * cell_area, na.rm = T)
 
 print(i)
 print(year[i])
+print(paste("PRE : ",PRE[i]))
+print(paste("EVA : ",EVA[i]))
+print(paste("RUN : ",RUN[i]))
+
 print(paste("SWT : ",SWT[i]))
 print(paste("SNW : ",SNW[i]))
 print(paste("SNF : ",SNF[i]))
@@ -75,7 +94,7 @@ print("")
 }
 
 # assumption for the analysis starting_year
-analysis_starting_year = 1960 # starting_year + 10
+analysis_starting_year = 1910 # starting_year + 10
 # index of the starting year
 sta = which(year == analysis_starting_year)
 # index of the starting year
