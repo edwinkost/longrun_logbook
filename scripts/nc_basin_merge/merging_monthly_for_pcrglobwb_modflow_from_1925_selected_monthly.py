@@ -42,8 +42,11 @@ cmd     += 'wait'
 print cmd
 os.system(cmd)
 
-# get the list of pcrglobw netcdf files
-pcrglobwb_netcdf_list = glob.glob(output_folder + "/" + str(year_int[i_year]) + "_to_" + str(year_int[i_year+1]-1) + '/' + str(netcdf_file_name))
+# get the list of pcrglobw netcdf files (must be consistent with the 'selected_monthly' option)
+pcrglobwb_netcdf_list = [
+output_folder + "/1901_to_2010/" + 'totalGroundwaterAbstraction_monthTot_output.nc',
+output_folder + "/1901_to_2010/" + 'gwRecharge_monthTot_output.nc'
+]
 
 print pcrglobwb_netcdf_list
 
