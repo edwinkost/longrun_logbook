@@ -440,10 +440,9 @@ if list_type == "selected":\
 # the monthly files
 if list_type == "selected_monthly":\
 	netcdfList = [
-		'discharge_monthAvg_output.nc',
 		'totalGroundwaterAbstraction_monthTot_output.nc',
-		'gwRecharge_monthTot_output.nc',
-        'totalRunoff_monthTot_output.nc']
+		'gwRecharge_monthTot_output.nc'
+		]
 
 for i in netcdfList:print i
 

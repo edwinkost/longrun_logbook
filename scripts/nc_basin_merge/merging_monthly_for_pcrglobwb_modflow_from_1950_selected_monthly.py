@@ -15,6 +15,13 @@ last_year = 2010
 # specific file name for output TWS file
 tws_filename = None
 
+# get the list of pcrglobw netcdf files (must be consistent with the 'selected_monthly' option)
+pcrglobwb_netcdf_list = [
+output_folder + "/1950_to_2010/" + 'totalGroundwaterAbstraction_monthTot_output.nc',
+output_folder + "/1950_to_2010/" + 'gwRecharge_monthTot_output.nc'
+]
+print pcrglobwb_netcdf_list
+
 # input folders (the sequence must be consistent with the list 'year_int'
 input_folder = [
 '/projects/0/dfguu/users/edwin/05min_runs_november_2015_start/pcrglobwb_modflow_from_1950/',                      
@@ -41,10 +48,6 @@ cmd     += 'wait'
 print cmd
 os.system(cmd)
 
-# get the list of pcrglobw netcdf files
-pcrglobwb_netcdf_list = glob.glob(output_folder + "/" + str(year_int[i_year]) + "_to_" + str(year_int[i_year+1]-1) + '/' + str(netcdf_file_name))
-
-print pcrglobwb_netcdf_list
 
 # preparing the complete output folder
 complete_output_folder = output_folder + "/" + str(year_int[0]) + "_to_" + str(last_year)
