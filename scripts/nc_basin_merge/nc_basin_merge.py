@@ -437,6 +437,16 @@ if list_type == "monthly_16":\
 if list_type == "selected":\
 	netcdfList = [str(sys.argv[7])]
 
+# the monthly files
+if list_type == "selected_monthly":\
+	netcdfList = [
+		'discharge_monthAvg_output.nc',
+		'totalGroundwaterAbstraction_monthTot_output.nc',
+		'gwRecharge_monthTot_output.nc',
+        'totalRunoff_monthTot_output.nc',
+		'precipitation_monthTot_output.nc',
+		'waterBodyActEvaporation_monthTot_output.nc']
+
 for i in netcdfList:print i
 
 ncores = min(len(netcdfList), max_number_of_cores)
