@@ -100,6 +100,9 @@ print(paste("UPP : ",UPP[i]))
 print(paste("LOW : ",LOW[i]))
 print(paste("GWT : ",GWT[i]))
 
+print(paste("GWA : ",GWA[i]))
+print(paste("RCH : ",RCH[i]))
+
 print("")
 
 }
