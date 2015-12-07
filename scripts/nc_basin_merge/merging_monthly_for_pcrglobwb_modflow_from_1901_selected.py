@@ -39,8 +39,8 @@ os.system(cmd)
 # merging annual resolution over areas
 cmd = ''; print cmd
 for i_year in range(0, len(year_int)-1):
-    cmd += 'python nc_basin_merge.py %s %s/%i_to_%i/ %i %i-12-31 %i-12-31 selected %s & ' %(input_folder[i_year]         , output_folder, year_int[i_year]         , year_int[i_year+1]-1, num_of_cores, year_int[i_year]         , year_int[i_year+1]-1, netcdf_file_name)
-cmd     += 'python nc_basin_merge.py %s %s/%i_to_%i/ %i %i-12-31 %i-12-31 selected %s & ' %(input_folder[len(year_int)-1], output_folder, year_int[len(year_int)-1], last_year,            num_of_cores, year_int[len(year_int)-1], last_year           , netcdf_file_name)
+    cmd += 'python nc_basin_merge.py %s %s/%i_to_%i/ %i %i-01-31 %i-12-31 selected %s & ' %(input_folder[i_year]         , output_folder, year_int[i_year]         , year_int[i_year+1]-1, num_of_cores, year_int[i_year]         , year_int[i_year+1]-1, netcdf_file_name)
+cmd     += 'python nc_basin_merge.py %s %s/%i_to_%i/ %i %i-01-31 %i-12-31 selected %s & ' %(input_folder[len(year_int)-1], output_folder, year_int[len(year_int)-1], last_year,            num_of_cores, year_int[len(year_int)-1], last_year           , netcdf_file_name)
 cmd     += 'wait'
 print cmd
 os.system(cmd)
