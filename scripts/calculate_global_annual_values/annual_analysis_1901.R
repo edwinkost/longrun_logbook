@@ -125,5 +125,7 @@ TWS_corrected = SWT + SNW_corrected + SNF_corrected + INT + TOP + UPP + LOW + GW
 
 plot(year[sta:las], TWS_corrected[sta:las]); lines(year[sta:las], TWS_corrected[sta:las])
 
+plot(year[sta:las], GWA[sta:las]); lines(year[sta:las], GWA[sta:las])
 
+GWT_mod = GWT - GWA
 
