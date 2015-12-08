@@ -442,6 +442,11 @@ if list_type == "selected_monthly":\
 	netcdfList = [
 		'totalGroundwaterAbstraction_monthTot_output.nc',
 		'gwRecharge_monthTot_output.nc',
+		]
+
+# the monthly files
+if list_type == "selected_monthly_runoff_components":\
+	netcdfList = [
         'baseflow_monthTot_output.nc',
         'directRunoff_monthTot_output.nc',
         'interflowTotal_monthTot_output.nc'
