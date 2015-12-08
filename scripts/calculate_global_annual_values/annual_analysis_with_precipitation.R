@@ -131,3 +131,4 @@ SNF_corrected = SNF[1] + SNF_corrected
 
 # the corrected TWS
 TWS_corrected = SWT + SNW_corrected + SNF_corrected + INT + TOP + UPP + LOW + GWT
+plot(year[sta:las], TWS_corrected[sta:las]); lines(year[sta:las], TWS_corrected[sta:las])
