@@ -122,3 +122,6 @@ SNF_corrected = SNF - (snf_lm_model$coefficients[1] + snf_lm_model$coefficients[
 
 # the corrected TWS
 TWS_corrected = SWT + SNW_corrected + SNF_corrected + INT + TOP + UPP + LOW + GWT
+
+# plot the corrected TWS
+plot(year[sta:las], TWS_corrected[sta:las]); lines(year[sta:las], TWS_corrected[sta:las])
