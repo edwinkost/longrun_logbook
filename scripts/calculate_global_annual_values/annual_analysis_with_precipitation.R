@@ -217,4 +217,56 @@ g = cbind(rbind(gA, gB, gC, size = "last"), rbind(gD, gE, gF, size = "last"), si
 grid.newpage()
 grid.draw(g)
 
-# making data frame for the precipitation
+# making data frame for all fluxes
+precipitation = PRE
+evaporation   = EVA
+runoff        = RUN
+data_frame_flux = data.frame(precipitation, evaporation, runoff)
+file_name = paste(output_folder, "fluxes_", starting_year, "to2010.txt",sep ="")
+write.table(data_frame_flux, file_name, sep = ";", row.names = FALSE)
+
+# calculate mean values of fluxes
+mean_precipitation = mean(precipitation[sta:las])
+mean_evaporation   = mean(evaporation[sta:las])
+mean_runoff        = mean(runoff[sta:las])
+
+# calculate anomaly fluxes and making data frame for anomaly
+precipitation_anomaly = precipitation - mean_precipitation
+evaporation_anomaly   = evaporation   - mean_evaporation  
+runoff_anomaly        = runoff        - mean_runoff       
+data_frame_flux_anomaly = data.frame(year, precipitation_anomaly, evaporation_anomaly, runoff_anomaly)
+write.table(data_frame_flux_anomaly, file_name, sep = ";", row.names = FALSE)
+
+# amplitude for fluxes (for the bar plots)
+amplitude_precipitation = max(mean_precipitation - min(precipitation[sta:las]), max(precipitation[sta:las]) - mean_precipitation) 
+amplitude_evaporation   = max(mean_evaporation   - min(evaporation[sta:las])  , max(evaporation[sta:las])   - mean_evaporation) 
+amplitude_runoff        = max(mean_runoff        - min(runoff[sta:las])       , max(runoff[sta:las])        - mean_runoff) 
+
+# making barplot for fluxes
+pre_anomaly_bar_plot = ggplot(data = data_frame_anomaly, aes(x = year, y = precipitation_anomaly)) + geom_bar(stat = "identity", position = "identity")
+eva_anomaly_bar_plot = ggplot(data = data_frame_anomaly, aes(x = year, y = evaporation_anomaly  )) + geom_bar(stat = "identity", position = "identity")
+run_anomaly_bar_plot = ggplot(data = data_frame_anomaly, aes(x = year, y = runoff_anomaly       )) + geom_bar(stat = "identity", position = "identity")
+# setting x and y axes
+pre_anomaly_bar_plot <- pre_anomaly_bar_plot + scale_y_continuous(limits = c(- amplitude_precipitation, amplitude_precipitation)) + scale_x_continuous(limits = c(analysis_starting_year, 2010))
+eva_anomaly_bar_plot <- eva_anomaly_bar_plot + scale_y_continuous(limits = c(- amplitude_evaporation  , amplitude_evaporation  )) + scale_x_continuous(limits = c(analysis_starting_year, 2010))
+run_anomaly_bar_plot <- run_anomaly_bar_plot + scale_y_continuous(limits = c(- amplitude_runoff       , amplitude_runoff       )) + scale_x_continuous(limits = c(analysis_starting_year, 2010))
+
+# making plot for absolute storages
+total_water_storage_chart <- ggplot(data = data_frame_absolute, aes(x = year, y = total_water_storage)) + geom_line() + scale_x_continuous(limits = c(analysis_starting_year, 2010))
+surface_water_chart       <- ggplot(data = data_frame_absolute, aes(x = year, y = surface_water))       + geom_line() + scale_x_continuous(limits = c(analysis_starting_year, 2010))
+groundwater_chart         <- ggplot(data = data_frame_absolute, aes(x = year, y = groundwater))         + geom_line() + scale_x_continuous(limits = c(analysis_starting_year, 2010))
+# setting y axes
+total_water_storage_chart <- total_water_storage_chart + scale_y_continuous(limits = c(mean_total_water_storage - amplitude, mean_total_water_storage + amplitude)) 
+surface_water_chart       <- surface_water_chart       + scale_y_continuous(limits = c(mean_surface_water       - amplitude, mean_surface_water       + amplitude)) 
+groundwater_chart         <- groundwater_chart         + scale_y_continuous(limits = c(mean_groundwater         - amplitude, mean_groundwater         + amplitude)) 
+
+# plooting storage and fluxes charts
+gA <- ggplotGrob(total_water_storage_chart)
+gB <- ggplotGrob(surface_water_chart)
+gC <- ggplotGrob(groundwater_chart)
+gD <- ggplotGrob(pre_anomaly_bar_plot)
+gE <- ggplotGrob(eva_anomaly_bar_plot)
+gF <- ggplotGrob(run_anomaly_bar_plot)
+g = cbind(rbind(gA, gB, gC, size = "last"), rbind(gD, gE, gF, size = "last"), size = "first")
+grid.newpage()
+grid.draw(g)
