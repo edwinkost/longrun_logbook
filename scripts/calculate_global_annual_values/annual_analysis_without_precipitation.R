@@ -4,6 +4,8 @@
 # - starting_year
 
 require(ncdf4)
+require(ggplot2)
+require(grid)
 
 #~ pre_file = nc_open( paste( output_folder, "precipitation_annuaTot_output.nc"               , sep = "") )
 eva_file = nc_open( paste( output_folder, "totalEvaporation_annuaTot_output.nc"            , sep = "") )
@@ -132,3 +134,87 @@ SNF_corrected = SNF[1] + SNF_corrected
 # the corrected TWS
 TWS_corrected = SWT + SNW_corrected + SNF_corrected + INT + TOP + UPP + LOW + GWT
 plot(year[sta:las], TWS_corrected[sta:las]); lines(year[sta:las], TWS_corrected[sta:las])
+
+# TODO: write a complete and raw data frame
+data_frame_raw_complete = data.frame(year,
+EVA,
+RUN,
+SNW,
+SNF,
+SWT,
+TOP,
+INT,
+UPP,
+LOW,
+GWT,
+SNW_corrected,
+SNF_corrected)
+file_name = paste(output_folder, "table_raw_complete_", starting_year, "to2010.txt",sep ="")
+write.table(data_frame_raw_complete, file_name, sep = ";", row.names = FALSE)
+
+# integrating to several storages
+total_water_storage = TWS_corrected
+surface_water       = SWT + TOP
+snow                = SNW_corrected + SNF_corrected                       ; plot(year[sta:las], snow[sta:las]); lines(year[sta:las], snow[sta:las])
+interception        = INT
+soil_moisture       = UPP + LOW
+groundwater         = GWT
+
+# identify mean values (only using a specific period of interest
+mean_total_water_storage = mean(total_water_storage[sta:las])
+mean_surface_water       = mean(surface_water      [sta:las])
+mean_snow                = mean(snow               [sta:las])
+mean_interception        = mean(interception       [sta:las])
+mean_soil_moisture       = mean(soil_moisture      [sta:las])
+mean_groundwater         = mean(groundwater        [sta:las])
+
+# identiy the maximum amplitude from the mean values (for making charts) 
+amplitude = max( 
+                    mean_total_water_storage - min(total_water_storage[sta:las]), max(total_water_storage[sta:las]) - mean_total_water_storage,
+                    mean_surface_water       - min(surface_water[sta:las])      , max(surface_water[sta:las])       - mean_surface_water,
+                    mean_groundwater         - min(groundwater[sta:las])        , max(groundwater[sta:las])         - mean_groundwater,
+                0.0)
+
+# making data frame for the absolute value and write it to file
+data_frame_absolute = data.frame(year, total_water_storage, surface_water, snow, interception, soil_moisture, groundwater)
+file_name = paste(output_folder, "absolute_", starting_year, "to2010.txt",sep ="")
+write.table(data_frame_absolute, file_name, sep = ";", row.names = FALSE)
+
+# calculating anomaly values
+total_water_storage_anomaly = total_water_storage - mean_total_water_storage
+surface_water_anomaly       = surface_water       - mean_surface_water      
+snow_anomaly                = snow                - mean_snow               ; plot(year[sta:las], snow_anomaly[sta:las]); lines(year[sta:las], snow_anomaly[sta:las])  
+interception_anomaly        = interception        - mean_interception       
+soil_moisture_anomaly       = soil_moisture       - mean_soil_moisture      
+groundwater_anomaly         = groundwater         - mean_groundwater        
+
+# making data frame for the anomaly value
+data_frame_anomaly = data.frame(year, total_water_storage_anomaly, surface_water_anomaly, snow_anomaly, interception_anomaly, soil_moisture_anomaly, groundwater_anomaly)
+
+# making the anomaly charts
+tws_anomaly_chart <- ggplot(data = data_frame_anomaly, aes(x = year, y = total_water_storage_anomaly)) + geom_line() + scale_x_continuous(limits = c(analysis_starting_year, 2010))
+swt_anomaly_chart <- ggplot(data = data_frame_anomaly, aes(x = year, y = surface_water_anomaly))       + geom_line() + scale_x_continuous(limits = c(analysis_starting_year, 2010))
+snw_anomaly_chart <- ggplot(data = data_frame_anomaly, aes(x = year, y = snow_anomaly))                + geom_line() + scale_x_continuous(limits = c(analysis_starting_year, 2010))
+int_anomaly_chart <- ggplot(data = data_frame_anomaly, aes(x = year, y = interception_anomaly))        + geom_line() + scale_x_continuous(limits = c(analysis_starting_year, 2010))
+soi_anomaly_chart <- ggplot(data = data_frame_anomaly, aes(x = year, y = soil_moisture_anomaly))       + geom_line() + scale_x_continuous(limits = c(analysis_starting_year, 2010))
+gwt_anomaly_chart <- ggplot(data = data_frame_anomaly, aes(x = year, y = groundwater_anomaly))         + geom_line() + scale_x_continuous(limits = c(analysis_starting_year, 2010))
+# setting y axes
+tws_anomaly_chart <- tws_anomaly_chart + scale_y_continuous(limits = c(- amplitude, amplitude))
+swt_anomaly_chart <- swt_anomaly_chart + scale_y_continuous(limits = c(- amplitude, amplitude))
+snw_anomaly_chart <- snw_anomaly_chart + scale_y_continuous(limits = c(- amplitude, amplitude))
+int_anomaly_chart <- int_anomaly_chart + scale_y_continuous(limits = c(- amplitude, amplitude))
+soi_anomaly_chart <- soi_anomaly_chart + scale_y_continuous(limits = c(- amplitude, amplitude))
+gwt_anomaly_chart <- gwt_anomaly_chart + scale_y_continuous(limits = c(- amplitude, amplitude))
+
+# plotting the anomaly charts - this is for one slide
+gA <- ggplotGrob(tws_anomaly_chart)
+gB <- ggplotGrob(swt_anomaly_chart)
+gC <- ggplotGrob(gwt_anomaly_chart)
+gD <- ggplotGrob(snw_anomaly_chart)
+gE <- ggplotGrob(int_anomaly_chart)
+gF <- ggplotGrob(soi_anomaly_chart)
+g = cbind(rbind(gA, gB, gC, size = "last"), rbind(gD, gE, gF, size = "last"), size = "first")
+grid.newpage()
+grid.draw(g)
+
+
