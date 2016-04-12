@@ -7,22 +7,14 @@ require(ncdf4)
 require(ggplot2)
 require(grid)
 
-pre_file = nc_open( paste( output_folder, "precipitation_annuaTot_output.nc"               , sep = "") )
-eva_file = nc_open( paste( output_folder, "totalEvaporation_annuaTot_output.nc"            , sep = "") )
-run_file = nc_open( paste( output_folder, "totalRunoff_annuaTot_output.nc"                 , sep = "") )
+# reading system arguments:
+args <- commandArgs()
 
-snw_file = nc_open( paste( output_folder, "snowCoverSWE_annuaAvg_output.nc"                , sep = "") )
-snf_file = nc_open( paste( output_folder, "snowFreeWater_annuaAvg_output.nc"               , sep = "") )
+# pcrglobwb output folder that will be analyzed:
+pcrglobwb_output_folder <- args[4]
 
-swt_file = nc_open( paste( output_folder, "surfaceWaterStorage_annuaAvg_output.nc"         , sep = "") )
-top_file = nc_open( paste( output_folder, "topWaterLayer_annuaAvg_output.nc"               , sep = "") )
-
-int_file = nc_open( paste( output_folder, "interceptStor_annuaAvg_output.nc"               , sep = "") )
-
-upp_file = nc_open( paste( output_folder, "storUppTotal_annuaAvg_output.nc"                , sep = "") )
-low_file = nc_open( paste( output_folder, "storLowTotal_annuaAvg_output.nc"                , sep = "") )
-
-gwt_file = nc_open( paste( output_folder, "groundwaterThicknessEstimate_annuaAvg_output.nc", sep = "") )
+# output folder for this analysis:
+analysis_output_folder  <- args[5]
 
 # time values 
 time = ncvar_get(swt_file, "time")
@@ -53,6 +45,19 @@ cell_area = ncvar_get(cell_area_file, "Band1")[,]
 nc_close(cell_area_file)
 
 for (i in 1:length(time)){
+
+# opening netcdf files:
+pre_file = nc_open( paste( pcrglobwb_output_folder, "precipitation_annuaTot_output".nc"               , sep = "") )
+eva_file = nc_open( paste( pcrglobwb_output_folder, "totalEvaporation_annuaTot_output.nc"            , sep = "") )
+run_file = nc_open( paste( pcrglobwb_output_folder, "totalRunoff_annuaTot_output.nc"                 , sep = "") )
+snw_file = nc_open( paste( pcrglobwb_output_folder, "snowCoverSWE_annuaAvg_output.nc"                , sep = "") )
+snf_file = nc_open( paste( pcrglobwb_output_folder, "snowFreeWater_annuaAvg_output.nc"               , sep = "") )
+swt_file = nc_open( paste( pcrglobwb_output_folder, "surfaceWaterStorage_annuaAvg_output.nc"         , sep = "") )
+top_file = nc_open( paste( pcrglobwb_output_folder, "topWaterLayer_annuaAvg_output.nc"               , sep = "") )
+int_file = nc_open( paste( pcrglobwb_output_folder, "interceptStor_annuaAvg_output.nc"               , sep = "") )
+upp_file = nc_open( paste( pcrglobwb_output_folder, "storUppTotal_annuaAvg_output.nc"                , sep = "") )
+low_file = nc_open( paste( pcrglobwb_output_folder, "storLowTotal_annuaAvg_output.nc"                , sep = "") )
+gwt_file = nc_open( paste( pcrglobwb_output_folder, "groundwaterThicknessEstimate_annuaAvg_output.nc", sep = "") )
 
 PRE_field = ncvar_get(pre_file, "precipitation"                   , c(1, 1, i), c(-1, -1, 1))
 EVA_field = ncvar_get(eva_file, "total_evaporation"               , c(1, 1, i), c(-1, -1, 1))
