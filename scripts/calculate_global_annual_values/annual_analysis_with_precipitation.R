@@ -16,28 +16,73 @@ pcrglobwb_output_folder <- args[4]
 # output folder for this analysis:
 analysis_output_folder  <- args[5]
 
+# years used in the model
+starting_year           <- int(args[6])
+year = seq(starting_year, 2010, 1)
+
+#~ # command lines to merge annual netcdf files:
+#~ cdo mergetime */global/netcdf/precipitation_annuaTot_output_*.nc              merged/precipitation_annuaTot_output.nc
+#~ cdo mergetime */global/netcdf/totalEvaporation_annuaTot_output_*.nc           merged/totalEvaporation_annuaTot_output.nc
+#~ cdo mergetime */global/netcdf/totalRunoff_annuaTot_output_*.nc                merged/totalRunoff_annuaTot_output.nc
+#~ cdo mergetime */global/netcdf/gwRecharge_annuaTot_*.nc                        merged/gwRecharge_annuaTot.nc
+#~ cdo mergetime */global/netcdf/totalAbstraction_annuaTot_output_*.nc           merged/totalAbstraction_annuaTot_output.nc 
+#~ cdo mergetime */global/netcdf/totalGroundwaterAbstraction_annuaTot_ouput_*.nc merged/totalGroundwaterAbstraction_annuaTot_output.nc
+#~ cdo mergetime */global/netcdf/nonIrrGrossDemand_annuaTot_output_*.nc          merged/nonIrrGrossDemand_annuaTot_output.nc
+#~ cdo mergetime */global/netcdf/snowCoverSWE_annuaAvg_output_*.nc               merged/snowCoverSWE_annuaAvg_output.nc
+#~ cdo mergetime */global/netcdf/snowFreeWater_annuaAvg_output_*.nc              merged/snowFreeWater_annuaAvg_output.nc
+#~ cdo mergetime */global/netcdf/surfaceWaterStorage_annuaAvg_output_*.nc        merged/surfaceWaterStorage_annuaAvg_output.nc
+#~ cdo mergetime */global/netcdf/topWaterLayer_annuaAvg_output_*.nc              merged/topWaterLayer_annuaAvg_output.nc
+#~ cdo mergetime */global/netcdf/interceptStor_annuaAvg_output_*.nc              merged/interceptStor_annuaAvg_output.nc
+#~ cdo mergetime */global/netcdf/storUppTotal_annuaAvg_output_*.nc               merged/storUppTotal_annuaAvg_output.nc
+#~ cdo mergetime */global/netcdf/storLowTotal_annuaAvg_output_*.nc               merged/storLowTotal_annuaAvg_output.
+#~ cdo mergetime */modflow/transient/netcdf/groundwaterThicknessEstimate_monthEnd_output.nc merged/groundwaterThicknessEstimate_monthEnd_output.nc
+#~ cdo yearavg merged/groundwaterThicknessEstimate_monthEnd_output.nc  merged/groundwaterThicknessEstimate_annuaAvg_output.nc
+
+# opening netcdf files:
+pre_file = nc_open( paste( pcrglobwb_output_folder, "/precipitation_annuaTot_output.nc"               , sep = "") )
+eva_file = nc_open( paste( pcrglobwb_output_folder, "/totalEvaporation_annuaTot_output.nc"            , sep = "") )
+run_file = nc_open( paste( pcrglobwb_output_folder, "/totalRunoff_annuaTot_output.nc"                 , sep = "") )
+rch_file = nc_open( paste( pcrglobwb_output_folder, "/gwRecharge_annuaTot.nc"                         , sep = "") )
+wtd_file = nc_open( paste( pcrglobwb_output_folder, "/totalAbstraction_annuaTot_output.nc"            , sep = "") )
+gwa_file = nc_open( paste( pcrglobwb_output_folder, "/totalGroundwaterAbstraction_annuaTot_output.nc" , sep = "") )
+nir_file = nc_open( paste( pcrglobwb_output_folder, "/nonIrrGrossDemand_annuaTot_output.nc"           , sep = "") )
+snw_file = nc_open( paste( pcrglobwb_output_folder, "/snowCoverSWE_annuaAvg_output.nc"                , sep = "") )
+snf_file = nc_open( paste( pcrglobwb_output_folder, "/snowFreeWater_annuaAvg_output.nc"               , sep = "") )
+swt_file = nc_open( paste( pcrglobwb_output_folder, "/surfaceWaterStorage_annuaAvg_output.nc"         , sep = "") )
+top_file = nc_open( paste( pcrglobwb_output_folder, "/topWaterLayer_annuaAvg_output.nc"               , sep = "") )
+int_file = nc_open( paste( pcrglobwb_output_folder, "/interceptStor_annuaAvg_output.nc"               , sep = "") )
+upp_file = nc_open( paste( pcrglobwb_output_folder, "/storUppTotal_annuaAvg_output.nc"                , sep = "") )
+low_file = nc_open( paste( pcrglobwb_output_folder, "/storLowTotal_annuaAvg_output.nc"                , sep = "") )
+gwt_file = nc_open( paste( pcrglobwb_output_folder, "/groundwaterThicknessEstimate_annuaAvg_output.nc", sep = "") )
+
 # time values 
 time = ncvar_get(swt_file, "time")
 
-# years used in the model
-year = seq(starting_year, 2010, 1)
+###################################################################################################################
+# creating empty arrays (annual resolution) 
 
-PRE = rep(NA, length(time))
-EVA = rep(NA, length(time))
-RUN = rep(NA, length(time))
+# - precipitation, evaporation and runoff
+precipitation             = rep(NA, length(time))
+evaporation               = rep(NA, length(time))
+runoff                    = rep(NA, length(time))
 
-SNW = rep(NA, length(time))
-SNF = rep(NA, length(time))
+# - recharge, withdrawal, groundwater withdrawal, irrigation and non irrigation withdrawal
+recharge                  = rep(NA, length(time))
+total_withdrawal          = rep(NA, length(time))
+groundwater_withdrawal    = rep(NA, length(time))
+non_irrigation_withdrawal = rep(NA, length(time))       # domestic, industrial and livestock
+irrigation_withdrawal     = rep(NA, length(time))       # irrigation only (without livestock)
 
-SWT = rep(NA, length(time))
-TOP = rep(NA, length(time))
-
-INT = rep(NA, length(time))
-
-UPP = rep(NA, length(time))
-LOW = rep(NA, length(time))
-
-GWT = rep(NA, length(time))
+# - storage terms
+snow_water_equivalent     = rep(NA, length(time))
+free_water_above_snow     = rep(NA, length(time))
+surface_water_storage     = rep(NA, length(time))
+top_water_layer           = rep(NA, length(time))
+interception_storage      = rep(NA, length(time))
+upper_soil_storage        = rep(NA, length(time))
+lower_soil_storage        = rep(NA, length(time))
+groundwater_storage       = rep(NA, length(time))
+###################################################################################################################
 
 # cell area 
 cell_area_file = nc_open("/home/edwin/data/cell_area_nc/cellsize05min.correct.used.nc")
@@ -45,77 +90,80 @@ cell_area = ncvar_get(cell_area_file, "Band1")[,]
 nc_close(cell_area_file)
 
 for (i in 1:length(time)){
+#~ for (i in 1:5){
 
-# opening netcdf files:
-pre_file = nc_open( paste( pcrglobwb_output_folder, "precipitation_annuaTot_output".nc"               , sep = "") )
-eva_file = nc_open( paste( pcrglobwb_output_folder, "totalEvaporation_annuaTot_output.nc"            , sep = "") )
-run_file = nc_open( paste( pcrglobwb_output_folder, "totalRunoff_annuaTot_output.nc"                 , sep = "") )
-snw_file = nc_open( paste( pcrglobwb_output_folder, "snowCoverSWE_annuaAvg_output.nc"                , sep = "") )
-snf_file = nc_open( paste( pcrglobwb_output_folder, "snowFreeWater_annuaAvg_output.nc"               , sep = "") )
-swt_file = nc_open( paste( pcrglobwb_output_folder, "surfaceWaterStorage_annuaAvg_output.nc"         , sep = "") )
-top_file = nc_open( paste( pcrglobwb_output_folder, "topWaterLayer_annuaAvg_output.nc"               , sep = "") )
-int_file = nc_open( paste( pcrglobwb_output_folder, "interceptStor_annuaAvg_output.nc"               , sep = "") )
-upp_file = nc_open( paste( pcrglobwb_output_folder, "storUppTotal_annuaAvg_output.nc"                , sep = "") )
-low_file = nc_open( paste( pcrglobwb_output_folder, "storLowTotal_annuaAvg_output.nc"                , sep = "") )
-gwt_file = nc_open( paste( pcrglobwb_output_folder, "groundwaterThicknessEstimate_annuaAvg_output.nc", sep = "") )
 
-PRE_field = ncvar_get(pre_file, "precipitation"                   , c(1, 1, i), c(-1, -1, 1))
-EVA_field = ncvar_get(eva_file, "total_evaporation"               , c(1, 1, i), c(-1, -1, 1))
-RUN_field = ncvar_get(run_file, "total_runoff"                    , c(1, 1, i), c(-1, -1, 1))
+pre_field = ncvar_get(pre_file, "precipitation"                   , c(1, 1, i), c(-1, -1, 1))
+eva_field = ncvar_get(eva_file, "total_evaporation"               , c(1, 1, i), c(-1, -1, 1))
+run_field = ncvar_get(run_file, "total_runoff"                    , c(1, 1, i), c(-1, -1, 1))
 
-SNW_field = ncvar_get(snw_file, "snow_water_equivalent"           , c(1, 1, i), c(-1, -1, 1))
-SNF_field = ncvar_get(snf_file, "snow_free_water"                 , c(1, 1, i), c(-1, -1, 1))
+rch_field = ncvar_get(rch_file, "groundwater_recharge"            , c(1, 1, i), c(-1, -1, 1))
+wtd_field = ncvar_get(wtd_file, "total_abstraction"               , c(1, 1, i), c(-1, -1, 1))
+gwa_field = ncvar_get(gwa_file, "total_groundwater_abstraction"   , c(1, 1, i), c(-1, -1, 1))
+nir_field = ncvar_get(nir_file, "non_irrigation_gross_demand"     , c(1, 1, i), c(-1, -1, 1))
 
-SWT_field = ncvar_get(swt_file, "surface_water_storage"           , c(1, 1, i), c(-1, -1, 1))
-TOP_field = ncvar_get(top_file, "top_water_layer"                 , c(1, 1, i), c(-1, -1, 1))
+snw_field = ncvar_get(snw_file, "snow_water_equivalent"           , c(1, 1, i), c(-1, -1, 1))
+snf_field = ncvar_get(snf_file, "snow_free_water"                 , c(1, 1, i), c(-1, -1, 1))
 
-INT_field = ncvar_get(int_file, "interception_storage"            , c(1, 1, i), c(-1, -1, 1))
+swt_field = ncvar_get(swt_file, "surface_water_storage"           , c(1, 1, i), c(-1, -1, 1))
+top_field = ncvar_get(top_file, "top_water_layer"                 , c(1, 1, i), c(-1, -1, 1))
 
-UPP_field = ncvar_get(upp_file, "upper_soil_storage"              , c(1, 1, i), c(-1, -1, 1))
-LOW_field = ncvar_get(low_file, "lower_soil_storage"              , c(1, 1, i), c(-1, -1, 1))
+int_field = ncvar_get(int_file, "interception_storage"            , c(1, 1, i), c(-1, -1, 1))
 
-GWT_field = ncvar_get(gwt_file, "groundwater_thickness_estimate"  , c(1, 1, i), c(-1, -1, 1))
+upp_field = ncvar_get(upp_file, "upper_soil_storage"              , c(1, 1, i), c(-1, -1, 1))
+low_field = ncvar_get(low_file, "lower_soil_storage"              , c(1, 1, i), c(-1, -1, 1))
 
-# ignore zero values for some stores 
-SWT_field[which(SWT_field < 0.0)] = 0.0
+gwt_field = ncvar_get(gwt_file, "groundwater_thickness_estimate"  , c(1, 1, i), c(-1, -1, 1))
 
-# calculate the global volumes (unit: km3)
-PRE[i] = sum( PRE_field  * cell_area, na.rm = T)/10^9
-EVA[i] = sum( EVA_field  * cell_area, na.rm = T)/10^9
-RUN[i] = sum( RUN_field  * cell_area, na.rm = T)/10^9
+# Ignore zero values for surface water store.                     
+swt_field[which(swt_field < 0.0)] = 0.0
+# TODO: # We have to solve this issue. 
+# Possible solutions: 
+# 1) using kinematic wave; 
+# 2) try to use drain package for small streams; or 
+# 3) raise bottom elevations if there are only limited water left at streams. 
+# 4) Ask Oliver to obtain the total baseflow for the entire stress period.
 
-SNW[i] = sum( SNW_field  * cell_area, na.rm = T)/10^9
-SNF[i] = sum( SNF_field  * cell_area, na.rm = T)/10^9
+# Note: Negative groundwater storage is possible. 
+# TODO: Check this assumption.                       
 
-SWT[i] = sum( SWT_field  * cell_area, na.rm = T)/10^9
-TOP[i] = sum( TOP_field  * cell_area, na.rm = T)/10^9
+# calculate the global values (unit: km3)
+precipitation[i]              = sum( pre_field  * cell_area, na.rm = T)/10^9
+evaporation[i]                = sum( eva_field  * cell_area, na.rm = T)/10^9
+runoff[i]                     = sum( run_field  * cell_area, na.rm = T)/10^9
+recharge[i]                   = sum( rch_field  * cell_area, na.rm = T)/10^9
+total_withdrawal[i]           = sum( wtd_field  * cell_area, na.rm = T)/10^9
+groundwater_withdrawal[i]     = sum( gwa_field  * cell_area, na.rm = T)/10^9
+non_irrigation_withdrawal[i]  = sum( nir_field  * cell_area, na.rm = T)/10^9    
+irrigation_withdrawal[i]      = total_withdrawal[i] - non_irrigation_withdrawal[i]
+snow_water_equivalent[i]      = sum( snw_field  * cell_area, na.rm = T)/10^9
+free_water_above_snow[i]      = sum( snf_field  * cell_area, na.rm = T)/10^9
+surface_water_storage[i]      = sum( swt_field  * cell_area, na.rm = T)/10^9
+top_water_layer[i]            = sum( top_field  * cell_area, na.rm = T)/10^9
+interception_storage[i]       = sum( int_field  * cell_area, na.rm = T)/10^9
+upper_soil_storage[i]         = sum( upp_field  * cell_area, na.rm = T)/10^9
+lower_soil_storage[i]         = sum( low_field  * cell_area, na.rm = T)/10^9
+groundwater_storage[i]        = sum( gwt_field  * cell_area, na.rm = T)/10^9
 
-INT[i] = sum( INT_field  * cell_area, na.rm = T)/10^9
-
-UPP[i] = sum( UPP_field  * cell_area, na.rm = T)/10^9
-LOW[i] = sum( LOW_field  * cell_area, na.rm = T)/10^9
-
-GWT[i] = sum( GWT_field  * cell_area, na.rm = T)/10^9
-
+print("")
 print(i)
 print(year[i])
-print(paste("PRE : ",PRE[i]))
-print(paste("EVA : ",EVA[i]))
-print(paste("RUN : ",RUN[i]))
-
-print(paste("SNW : ",SNW[i]))
-print(paste("SNF : ",SNF[i]))
-
-print(paste("SWT : ",SWT[i]))
-print(paste("TOP : ",TOP[i]))
-
-print(paste("INT : ",INT[i]))
-
-print(paste("UPP : ",UPP[i]))
-print(paste("LOW : ",LOW[i]))
-
-print(paste("GWT : ",GWT[i]))
-
+print(paste("PRE : ", precipitation[i]            ))
+print(paste("EVA : ", evaporation[i]              ))
+print(paste("RUN : ", runoff[i]                   ))
+print(paste("RCH : ", recharge[i]                 ))
+print(paste("WTD : ", total_withdrawal[i]         ))
+print(paste("GWA : ", groundwater_withdrawal[i]   ))
+print(paste("NIR : ", non_irrigation_withdrawal[i]))
+print(paste("IRR : ", irrigation_withdrawal[i]    ))
+print(paste("SNW : ", snow_water_equivalent[i]    ))
+print(paste("SNF : ", free_water_above_snow[i]    ))
+print(paste("SWT : ", surface_water_storage[i]    ))
+print(paste("TOP : ", top_water_layer[i]          ))
+print(paste("INT : ", interception_storage[i]     ))
+print(paste("UPP : ", upper_soil_storage[i]       ))
+print(paste("LOW : ", lower_soil_storage[i]       ))
+print(paste("GWT : ", groundwater_storage[i]      ))
 print("")
 
 }
@@ -127,42 +175,59 @@ sta = which(year == analysis_starting_year)
 las = length(year)
 
 # correcting snow and snow free water (due to the accumulation in glacier and ice sheet regions)
-snw_lm_model  = lm(SNW ~ year)
-snf_lm_model  = lm(SNF ~ year)
-SNW_corrected = SNW - (snw_lm_model$coefficients[1] + snw_lm_model$coefficients[2]*year)
-SNF_corrected = SNF - (snf_lm_model$coefficients[1] + snf_lm_model$coefficients[2]*year)
+snw_lm_model = lm(snow_water_equivalent ~ year)
+snf_lm_model = lm(free_water_above_snow ~ year)
+snow_water_equivalent_corrected = snow_water_equivalent - (snw_lm_model$coefficients[1] + snw_lm_model$coefficients[2]*year)
+free_water_above_snow_corrected = free_water_above_snow - (snf_lm_model$coefficients[1] + snf_lm_model$coefficients[2]*year)
 
 # including the starting snow and snow free water
-SNW_corrected = SNW[1] + SNW_corrected
-SNF_corrected = SNF[1] + SNF_corrected
+snow_water_equivalent_corrected = snow_water_equivalent[1] + snow_water_equivalent_corrected
+free_water_above_snow_corrected = free_water_above_snow[1] + free_water_above_snow_corrected
 
-# the corrected TWS
-TWS_corrected = SWT + SNW_corrected + SNF_corrected + INT + TOP + UPP + LOW + GWT
-plot(year[sta:las], TWS_corrected[sta:las]); lines(year[sta:las], TWS_corrected[sta:las])
+# the corrected total water storage
+total_water_storage_corrected = surface_water_storage + 
+                                snow_water_equivalent_corrected + 
+                                free_water_above_snow_corrected + 
+                                interception_storage + 
+                                top_water_layer + 
+                                upper_soil_storage + 
+                                lower_soil_storage + 
+                                groundwater_storage
+plot(year[sta:las], total_water_storage_corrected[sta:las])  ; lines(year[sta:las], total_water_storage_corrected[sta:las])
+plot(year[sta:las], groundwater_storage[sta:las]);             lines(year[sta:las], groundwater_storage[sta:las])
+plot(year[sta:las], surface_water_storage[sta:las]);           lines(year[sta:las], surface_water_storage[sta:las])
+plot(year[sta:las], snow_water_equivalent_corrected[sta:las]); lines(year[sta:las], snow_water_equivalent_corrected[sta:las])
+plot(year[sta:las], free_water_above_snow_corrected[sta:las]); lines(year[sta:las], free_water_above_snow_corrected[sta:las])
 
-# TODO: write a complete and raw data frame
+# a complete and raw data frame
 data_frame_raw_complete = data.frame(year,
-EVA,
-RUN,
-SNW,
-SNF,
-SWT,
-TOP,
-INT,
-UPP,
-LOW,
-GWT,
-SNW_corrected,
-SNF_corrected)
+precipitation,
+evaporation,
+runoff,
+recharge,
+total_withdrawal,      
+groundwater_withdrawal,
+non_irrigation_withdrawal,
+irrigation_withdrawal,
+snow_water_equivalent, 
+free_water_above_snow, 
+surface_water_storage, 
+top_water_layer,       
+interception_storage,  
+upper_soil_storage,    
+lower_soil_storage,    
+groundwater_storage,   
+snow_water_equivalent_corrected,
+free_water_above_snow_corrected)
 file_name = paste(output_folder, "table_raw_complete_", starting_year, "to2010.txt",sep ="")
 write.table(data_frame_raw_complete, file_name, sep = ";", row.names = FALSE)
 
 # integrating to several storages
-total_water_storage = TWS_corrected
-surface_water       = SWT + TOP
-snow                = SNW_corrected + SNF_corrected                       ; plot(year[sta:las], snow[sta:las]); lines(year[sta:las], snow[sta:las])
-interception        = INT
-soil_moisture       = UPP + LOW
+total_water_storage = total_water_storage_corrected
+surface_water       = surface_water_storage + top_water_layer
+snow                = snow_water_equivalent_corrected + free_water_above_snow_corrected ; plot(year[sta:las], snow[sta:las]); lines(year[sta:las], snow[sta:las])
+interception        = interception_storage
+soil_moisture       = upper_soil_storage + lower_soil_storage
 groundwater         = GWT
 
 # identify mean values (only using a specific period of interest
