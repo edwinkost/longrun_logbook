@@ -11,12 +11,14 @@ require(grid)
 args <- commandArgs()
 
 # pcrglobwb output folder that will be analyzed:
+pcrglobwb_output_folder <- "/scratch-shared/edwin/05min_runs_february_2016/pcrglobwb_modflow_from_1901_6LCs_original_parameter_set/adjusted_ksat/merged/"
 pcrglobwb_output_folder <- args[4]
 
 # output folder for this analysis:
 analysis_output_folder  <- args[5]
 
 # years used in the model
+starting_year           <- 1901
 starting_year           <- int(args[6])
 year = seq(starting_year, 2010, 1)
 
@@ -167,6 +169,8 @@ print(paste("GWT : ", groundwater_storage[i]      ))
 print("")
 
 }
+
+# SAMPAI SINI
 
 # index of the starting year
 analysis_starting_year = starting_year + 10
