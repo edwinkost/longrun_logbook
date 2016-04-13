@@ -170,8 +170,6 @@ print("")
 
 }
 
-# SAMPAI SINI
-
 # index of the starting year
 analysis_starting_year = starting_year + 10
 sta = which(year == analysis_starting_year)
@@ -203,6 +201,7 @@ plot(year[sta:las], surface_water_storage[sta:las]);           lines(year[sta:la
 plot(year[sta:las], snow_water_equivalent_corrected[sta:las]); lines(year[sta:las], snow_water_equivalent_corrected[sta:las])
 plot(year[sta:las], free_water_above_snow_corrected[sta:las]); lines(year[sta:las], free_water_above_snow_corrected[sta:las])
 
+
 # a complete and raw data frame
 data_frame_raw_complete = data.frame(year,
 precipitation,
@@ -232,7 +231,7 @@ surface_water       = surface_water_storage + top_water_layer
 snow                = snow_water_equivalent_corrected + free_water_above_snow_corrected ; plot(year[sta:las], snow[sta:las]); lines(year[sta:las], snow[sta:las])
 interception        = interception_storage
 soil_moisture       = upper_soil_storage + lower_soil_storage
-groundwater         = GWT
+groundwater         = groundwater_storage
 
 # identify mean values (only using a specific period of interest
 mean_total_water_storage = mean(total_water_storage[sta:las])
@@ -291,11 +290,9 @@ g = cbind(rbind(gA, gB, gC, size = "last"), rbind(gD, gE, gF, size = "last"), si
 grid.newpage()
 grid.draw(g)
 
+
 # making data frame for all fluxes
-precipitation = PRE
-evaporation   = EVA
-runoff        = RUN
-data_frame_flux = data.frame(precipitation, evaporation, runoff)
+data_frame_flux = data.frame(precipitation, evaporation, runoff, withdrawal, groundwater_withdrawal, non_irrigation_withdrawal, irrigation_withdrawal)
 file_name = paste(output_folder, "fluxes_", starting_year, "to2010.txt",sep ="")
 write.table(data_frame_flux, file_name, sep = ";", row.names = FALSE)
 
