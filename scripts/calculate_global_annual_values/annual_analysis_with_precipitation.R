@@ -1,8 +1,4 @@
 
-# You have to define the following variables
-# - output_folder
-# - starting_year
-
 require(ncdf4)
 require(ggplot2)
 require(grid)
@@ -11,32 +7,34 @@ require(grid)
 args <- commandArgs()
 
 # pcrglobwb output folder that will be analyzed:
-pcrglobwb_output_folder <- "/scratch-shared/edwin/05min_runs_february_2016/pcrglobwb_modflow_from_1901_6LCs_original_parameter_set/adjusted_ksat/merged/"
+pcrglobwb_output_folder <- "/scratch-shared/edwin/05min_runs_february_2016/pcrglobwb_modflow_from_1935_6LCs_original_parameter_set/adjusted_ksat/merged/"
 pcrglobwb_output_folder <- args[4]
 
 # output folder for this analysis:
+analysis_output_folder  <- "/scratch-shared/edwin/05min_runs_february_2016/pcrglobwb_modflow_from_1935_6LCs_original_parameter_set/adjusted_ksat/analysis/"
 analysis_output_folder  <- args[5]
 
 # years used in the model
-starting_year           <- 1901
+starting_year           <- 1935
 starting_year           <- int(args[6])
 year = seq(starting_year, 2010, 1)
 
-#~ # command lines to merge annual netcdf files:
-#~ cdo mergetime */global/netcdf/precipitation_annuaTot_output_*.nc              merged/precipitation_annuaTot_output.nc
-#~ cdo mergetime */global/netcdf/totalEvaporation_annuaTot_output_*.nc           merged/totalEvaporation_annuaTot_output.nc
-#~ cdo mergetime */global/netcdf/totalRunoff_annuaTot_output_*.nc                merged/totalRunoff_annuaTot_output.nc
-#~ cdo mergetime */global/netcdf/gwRecharge_annuaTot_*.nc                        merged/gwRecharge_annuaTot.nc
-#~ cdo mergetime */global/netcdf/totalAbstraction_annuaTot_output_*.nc           merged/totalAbstraction_annuaTot_output.nc 
-#~ cdo mergetime */global/netcdf/totalGroundwaterAbstraction_annuaTot_ouput_*.nc merged/totalGroundwaterAbstraction_annuaTot_output.nc
-#~ cdo mergetime */global/netcdf/nonIrrGrossDemand_annuaTot_output_*.nc          merged/nonIrrGrossDemand_annuaTot_output.nc
-#~ cdo mergetime */global/netcdf/snowCoverSWE_annuaAvg_output_*.nc               merged/snowCoverSWE_annuaAvg_output.nc
-#~ cdo mergetime */global/netcdf/snowFreeWater_annuaAvg_output_*.nc              merged/snowFreeWater_annuaAvg_output.nc
-#~ cdo mergetime */global/netcdf/surfaceWaterStorage_annuaAvg_output_*.nc        merged/surfaceWaterStorage_annuaAvg_output.nc
-#~ cdo mergetime */global/netcdf/topWaterLayer_annuaAvg_output_*.nc              merged/topWaterLayer_annuaAvg_output.nc
-#~ cdo mergetime */global/netcdf/interceptStor_annuaAvg_output_*.nc              merged/interceptStor_annuaAvg_output.nc
-#~ cdo mergetime */global/netcdf/storUppTotal_annuaAvg_output_*.nc               merged/storUppTotal_annuaAvg_output.nc
-#~ cdo mergetime */global/netcdf/storLowTotal_annuaAvg_output_*.nc               merged/storLowTotal_annuaAvg_output.
+# command lines to merge annual netcdf files:
+#~ mkdir merged
+#~ cdo mergetime */global/netcdf/precipitation_annuaTot_output_*.nc               merged/precipitation_annuaTot_output.nc
+#~ cdo mergetime */global/netcdf/totalEvaporation_annuaTot_output_*.nc            merged/totalEvaporation_annuaTot_output.nc
+#~ cdo mergetime */global/netcdf/totalRunoff_annuaTot_output_*.nc                 merged/totalRunoff_annuaTot_output.nc
+#~ cdo mergetime */global/netcdf/gwRecharge_annuaTot_*.nc                         merged/gwRecharge_annuaTot.nc
+#~ cdo mergetime */global/netcdf/totalAbstraction_annuaTot_output_*.nc            merged/totalAbstraction_annuaTot_output.nc 
+#~ cdo mergetime */global/netcdf/totalGroundwaterAbstraction_annuaTot_output_*.nc merged/totalGroundwaterAbstraction_annuaTot_output.nc
+#~ cdo mergetime */global/netcdf/nonIrrGrossDemand_annuaTot_output_*.nc           merged/nonIrrGrossDemand_annuaTot_output.nc
+#~ cdo mergetime */global/netcdf/snowCoverSWE_annuaAvg_output_*.nc                merged/snowCoverSWE_annuaAvg_output.nc
+#~ cdo mergetime */global/netcdf/snowFreeWater_annuaAvg_output_*.nc               merged/snowFreeWater_annuaAvg_output.nc
+#~ cdo mergetime */global/netcdf/surfaceWaterStorage_annuaAvg_output_*.nc         merged/surfaceWaterStorage_annuaAvg_output.nc
+#~ cdo mergetime */global/netcdf/topWaterLayer_annuaAvg_output_*.nc               merged/topWaterLayer_annuaAvg_output.nc
+#~ cdo mergetime */global/netcdf/interceptStor_annuaAvg_output_*.nc               merged/interceptStor_annuaAvg_output.nc
+#~ cdo mergetime */global/netcdf/storUppTotal_annuaAvg_output_*.nc                merged/storUppTotal_annuaAvg_output.nc
+#~ cdo mergetime */global/netcdf/storLowTotal_annuaAvg_output_*.nc                merged/storLowTotal_annuaAvg_output.nc
 #~ cdo mergetime */modflow/transient/netcdf/groundwaterThicknessEstimate_monthEnd_output.nc merged/groundwaterThicknessEstimate_monthEnd_output.nc
 #~ cdo yearavg merged/groundwaterThicknessEstimate_monthEnd_output.nc  merged/groundwaterThicknessEstimate_annuaAvg_output.nc
 
@@ -86,6 +84,8 @@ lower_soil_storage        = rep(NA, length(time))
 groundwater_storage       = rep(NA, length(time))
 ###################################################################################################################
 
+# TODO: also report original surface_water_storage (with negative values)
+
 # cell area 
 cell_area_file = nc_open("/home/edwin/data/cell_area_nc/cellsize05min.correct.used.nc")
 cell_area = ncvar_get(cell_area_file, "Band1")[,]
@@ -118,6 +118,7 @@ low_field = ncvar_get(low_file, "lower_soil_storage"              , c(1, 1, i), 
 gwt_field = ncvar_get(gwt_file, "groundwater_thickness_estimate"  , c(1, 1, i), c(-1, -1, 1))
 
 # Ignore zero values for surface water store.                     
+swt_field_original = swt_field
 swt_field[which(swt_field < 0.0)] = 0.0
 # TODO: # We have to solve this issue. 
 # Possible solutions: 
@@ -222,7 +223,7 @@ lower_soil_storage,
 groundwater_storage,   
 snow_water_equivalent_corrected,
 free_water_above_snow_corrected)
-file_name = paste(output_folder, "table_raw_complete_", starting_year, "to2010.txt",sep ="")
+file_name = paste(analysis_output_folder, "/table_raw_complete_", starting_year, "to2010.txt",sep ="")
 write.table(data_frame_raw_complete, file_name, sep = ";", row.names = FALSE)
 
 # integrating to several storages
@@ -250,7 +251,7 @@ amplitude = max(
 
 # making data frame for the absolute value and write it to file
 data_frame_absolute = data.frame(year, total_water_storage, surface_water, snow, interception, soil_moisture, groundwater)
-file_name = paste(output_folder, "absolute_", starting_year, "to2010.txt",sep ="")
+file_name = paste(analysis_output_folder, "absolute_", starting_year, "to2010.txt",sep ="")
 write.table(data_frame_absolute, file_name, sep = ";", row.names = FALSE)
 
 # calculating anomaly values
@@ -292,8 +293,8 @@ grid.draw(g)
 
 
 # making data frame for all fluxes
-data_frame_flux = data.frame(precipitation, evaporation, runoff, withdrawal, groundwater_withdrawal, non_irrigation_withdrawal, irrigation_withdrawal)
-file_name = paste(output_folder, "fluxes_", starting_year, "to2010.txt",sep ="")
+data_frame_flux = data.frame(precipitation, evaporation, runoff, total_withdrawal, groundwater_withdrawal, non_irrigation_withdrawal, irrigation_withdrawal)
+file_name = paste(analysis_output_folder, "fluxes_", starting_year, "to2010.txt",sep ="")
 write.table(data_frame_flux, file_name, sep = ";", row.names = FALSE)
 
 # calculate mean values of fluxes
@@ -306,6 +307,7 @@ precipitation_anomaly = precipitation - mean_precipitation
 evaporation_anomaly   = evaporation   - mean_evaporation  
 runoff_anomaly        = runoff        - mean_runoff       
 data_frame_flux_anomaly = data.frame(year, precipitation_anomaly, evaporation_anomaly, runoff_anomaly)
+file_name = paste(analysis_output_folder, "anomaly_fluxes_", starting_year, "to2010.txt",sep ="")
 write.table(data_frame_flux_anomaly, file_name, sep = ";", row.names = FALSE)
 
 # amplitude for fluxes (for the bar plots)
@@ -331,7 +333,7 @@ total_water_storage_chart <- total_water_storage_chart + scale_y_continuous(limi
 surface_water_chart       <- surface_water_chart       + scale_y_continuous(limits = c(mean_surface_water       - amplitude, mean_surface_water       + amplitude)) 
 groundwater_chart         <- groundwater_chart         + scale_y_continuous(limits = c(mean_groundwater         - amplitude, mean_groundwater         + amplitude)) 
 
-# plooting storage and fluxes charts
+# ploting storage and fluxes charts
 gA <- ggplotGrob(total_water_storage_chart)
 gB <- ggplotGrob(surface_water_chart)
 gC <- ggplotGrob(groundwater_chart)
