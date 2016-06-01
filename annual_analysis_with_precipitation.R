@@ -36,7 +36,7 @@ merged_pcrglobwb_output_folder <- paste(pcrglobwb_output_folder,"/merged/"  , se
 analysis_output_folder         <- paste(pcrglobwb_output_folder,"/analysis/", sep = "")
 
 # running the merging commands
-with_merging <-- TRUE
+with_merging <- TRUE
 if (args[6] == "no_merging") {with_merging <- FALSE}
 if (with_merging == TRUE) {
 print("=====================================")
