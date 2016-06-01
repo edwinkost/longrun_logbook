@@ -29,20 +29,25 @@ setwd(pcrglobwb_output_folder)
 system('mkdir merged')
 system('mkdir analysis')
 
-# running the merging commands
-system('bash merging_annual_files.sh')
-
 # output folder that contains the merged netcdf files
 merged_pcrglobwb_output_folder <- paste(pcrglobwb_output_folder,"/merged/"  , sep = "")
 
 # output folder for this analysis:
 analysis_output_folder         <- paste(pcrglobwb_output_folder,"/analysis/", sep = "")
 
+# running the merging commands
+with_merging <-- TRUE
+if (args[6] == "no_merging") {with_merging <- FALSE}
+if (with_merging == TRUE) {
+print("Merging netcdf files in progress ...")
+system('bash merging_annual_files.sh')
+}
+
 # years used in the model
 starting_year           <- 1901
-starting_year           <- int(args[6])
+starting_year           <- int(args[7])
 end_year                <- 2010
-end_year                <- int(args[7])
+end_year                <- int(args[8])
 year = seq(starting_year, end_year, 1)
 
 
