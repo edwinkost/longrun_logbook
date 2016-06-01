@@ -39,13 +39,19 @@ analysis_output_folder         <- paste(pcrglobwb_output_folder,"/analysis/", se
 with_merging <-- TRUE
 if (args[6] == "no_merging") {with_merging <- FALSE}
 if (with_merging == TRUE) {
+print("=====================================")
+print("=====================================")
 print("Merging netcdf files in progress ...")
+print("=====================================")
+print("=====================================")
 system('bash merging_annual_files.sh')
 }
 
 # years used in the model
 starting_year           <- 1901
+starting_year           <- as.integer(args[7])
 end_year                <- 2010
+end_year                <- as.integer(args[8])
 year = seq(starting_year, end_year, 1)
 
 
