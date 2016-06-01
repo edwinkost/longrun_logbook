@@ -13,7 +13,7 @@ wait
 # - calculating annual average values for groundwater thickness estimate 
 cdo yearavg merged/groundwaterThicknessEstimate_monthEnd_output.nc                       merged/groundwaterThicknessEstimate_annuaAvg_output.nc &
 
-# - merging the other relevant annual files
+# - merging the other relevant annual files and wait until all processes are done
 cdo mergetime */global/netcdf/precipitation_annuaTot_output_*.nc                         merged/precipitation_annuaTot_output.nc                &
 cdo mergetime */global/netcdf/totalEvaporation_annuaTot_output_*.nc                      merged/totalEvaporation_annuaTot_output.nc             &
 cdo mergetime */global/netcdf/totalRunoff_annuaTot_output_*.nc                           merged/totalRunoff_annuaTot_output.nc                  &
@@ -28,3 +28,6 @@ cdo mergetime */global/netcdf/topWaterLayer_annuaAvg_output_*.nc                
 cdo mergetime */global/netcdf/interceptStor_annuaAvg_output_*.nc                         merged/interceptStor_annuaAvg_output.nc                &
 cdo mergetime */global/netcdf/storUppTotal_annuaAvg_output_*.nc                          merged/storUppTotal_annuaAvg_output.nc                 &
 cdo mergetime */global/netcdf/storLowTotal_annuaAvg_output_*.nc                          merged/storLowTotal_annuaAvg_output.nc                 &
+wait
+
+
