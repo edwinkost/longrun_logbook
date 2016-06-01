@@ -45,9 +45,9 @@ system('bash merging_annual_files.sh')
 
 # years used in the model
 starting_year           <- 1901
-starting_year           <- int(args[7])
+starting_year           <- as.interger(args[7])
 end_year                <- 2010
-end_year                <- int(args[8])
+end_year                <- as.interger(args[8])
 year = seq(starting_year, end_year, 1)
 
 
