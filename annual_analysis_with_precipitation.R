@@ -3,8 +3,8 @@ require(ncdf4)
 require(ggplot2)
 require(grid)
 
-# activating x11
-x11()
+#~ # activating x11 (I don't think this is necessary)
+#~ x11()
 
 # reading system arguments:
 args <- commandArgs()
