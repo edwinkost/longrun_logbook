@@ -7,17 +7,24 @@ mkdir merged
 # - merging monthly discharge result 
 cdo mergetime */global/netcdf/discharge_monthAvg_output_*.nc                             merged/discharge_monthAvg_output.nc                    & 
 
-# - merging groundwater thickness estimate result and wait until the process is done
+# - merging groundwater thickness estimate result 
+#   merging groundwater head result
+#   and wait until the process is done
 cdo mergetime */modflow/transient/netcdf/groundwaterThicknessEstimate_monthEnd_output.nc merged/groundwaterThicknessEstimate_monthEnd_output.nc &
+cdo mergetime */modflow/transient/netcdf/groundwaterHeadLayer1_monthEnd_output.nc        merged/groundwaterHeadLayer1_monthEnd_output.nc        &
+cdo mergetime */modflow/transient/netcdf/groundwaterHeadLayer1_monthEnd_output.nc        merged/groundwaterHeadLayer1_monthEnd_output.nc        &
 wait 
+
 # - calculating annual average values for groundwater thickness estimate 
 cdo yearavg merged/groundwaterThicknessEstimate_monthEnd_output.nc                       merged/groundwaterThicknessEstimate_annuaAvg_output.nc &
+cdo yearavg merged/groundwaterHeadLayer1_monthEnd_output.nc                              merged/groundwaterHeadLayer1_annuaAvg_output.nc        &
+cdo yearavg merged/groundwaterHeadLayer2_monthEnd_output.nc                              merged/groundwaterHeadLayer1_annuaAvg_output.nc        &
 
 # - merging the other relevant annual files and wait until all processes are done
 cdo mergetime */global/netcdf/precipitation_annuaTot_output_*.nc                         merged/precipitation_annuaTot_output.nc                &
 cdo mergetime */global/netcdf/totalEvaporation_annuaTot_output_*.nc                      merged/totalEvaporation_annuaTot_output.nc             &
 cdo mergetime */global/netcdf/totalRunoff_annuaTot_output_*.nc                           merged/totalRunoff_annuaTot_output.nc                  &
-cdo mergetime */global/netcdf/gwRecharge_annuaTot_*.nc                                   merged/gwRecharge_annuaTot.nc                          &
+cdo mergetime */global/netcdf/gwRecharge_annuaTot__output*.nc                            merged/gwRecharge_annuaTot_output.nc                   &
 cdo mergetime */global/netcdf/totalAbstraction_annuaTot_output_*.nc                      merged/totalAbstraction_annuaTot_output.nc             &
 cdo mergetime */global/netcdf/totalGroundwaterAbstraction_annuaTot_output_*.nc           merged/totalGroundwaterAbstraction_annuaTot_output.nc  &
 cdo mergetime */global/netcdf/nonIrrGrossDemand_annuaTot_output_*.nc                     merged/nonIrrGrossDemand_annuaTot_output.nc            &
