@@ -1,5 +1,6 @@
 
-# command lines to merge annual netcdf files:
+# option to show command lines
+set -x
 
 # - preparing the "merged" folder
 mkdir merged
