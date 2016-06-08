@@ -13,7 +13,7 @@ cdo mergetime */global/netcdf/discharge_monthAvg_output_*.nc                    
 #   and wait until the process is done
 cdo mergetime */modflow/transient/netcdf/groundwaterThicknessEstimate_monthEnd_output.nc merged/groundwaterThicknessEstimate_monthEnd_output.nc &
 cdo mergetime */modflow/transient/netcdf/groundwaterHeadLayer1_monthEnd_output.nc        merged/groundwaterHeadLayer1_monthEnd_output.nc        &
-cdo mergetime */modflow/transient/netcdf/groundwaterHeadLayer1_monthEnd_output.nc        merged/groundwaterHeadLayer1_monthEnd_output.nc        &
+cdo mergetime */modflow/transient/netcdf/groundwaterHeadLayer2_monthEnd_output.nc        merged/groundwaterHeadLayer2_monthEnd_output.nc        &
 wait 
 
 # - calculating annual average values for groundwater thickness estimate 
