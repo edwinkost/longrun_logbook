@@ -25,7 +25,7 @@ cdo yearavg merged/groundwaterHeadLayer2_monthEnd_output.nc                     
 cdo mergetime */global/netcdf/precipitation_annuaTot_output_*.nc                         merged/precipitation_annuaTot_output.nc                &
 cdo mergetime */global/netcdf/totalEvaporation_annuaTot_output_*.nc                      merged/totalEvaporation_annuaTot_output.nc             &
 cdo mergetime */global/netcdf/totalRunoff_annuaTot_output_*.nc                           merged/totalRunoff_annuaTot_output.nc                  &
-cdo mergetime */global/netcdf/gwRecharge_annuaTot__output*.nc                            merged/gwRecharge_annuaTot_output.nc                   &
+cdo mergetime */global/netcdf/gwRecharge_annuaTot_output*.nc                             merged/gwRecharge_annuaTot_output.nc                   &
 cdo mergetime */global/netcdf/totalAbstraction_annuaTot_output_*.nc                      merged/totalAbstraction_annuaTot_output.nc             &
 cdo mergetime */global/netcdf/totalGroundwaterAbstraction_annuaTot_output_*.nc           merged/totalGroundwaterAbstraction_annuaTot_output.nc  &
 cdo mergetime */global/netcdf/nonIrrGrossDemand_annuaTot_output_*.nc                     merged/nonIrrGrossDemand_annuaTot_output.nc            &
