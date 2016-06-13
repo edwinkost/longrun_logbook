@@ -409,6 +409,11 @@ total_water_storage_chart <- total_water_storage_chart + scale_y_continuous(limi
 surface_water_chart       <- surface_water_chart       + scale_y_continuous(limits = c(mean_surface_water       - amplitude, mean_surface_water       + amplitude)) 
 groundwater_chart         <- groundwater_chart         + scale_y_continuous(limits = c(mean_groundwater         - amplitude, mean_groundwater         + amplitude)) 
 
+# making plots for precipitation, evaporation and runoff
+precipitation_chart  <- ggplot(data = data_frame_absolute, aes(x = year, y = precipitation         )) + geom_line() + scale_x_continuous(limits = c(1900, 2015))
+evaporation_chart    <- ggplot(data = data_frame_absolute, aes(x = year, y = evaporation           )) + geom_line() + scale_x_continuous(limits = c(1900, 2015))
+runoff_chart         <- ggplot(data = data_frame_absolute, aes(x = year, y = runoff                )) + geom_line() + scale_x_continuous(limits = c(1900, 2015))
+
 # making plots for groundwater recharge, total withdrawal and groundwater abstraction
 recharge_chart       <- ggplot(data = data_frame_absolute, aes(x = year, y = recharge              )) + geom_line() + scale_x_continuous(limits = c(1900, 2015))
 tot_withdrawal_chart <- ggplot(data = data_frame_absolute, aes(x = year, y = total_withdrawal      )) + geom_line() + scale_x_continuous(limits = c(1900, 2015))
@@ -433,7 +438,7 @@ dev.off()
 
 
 ###########################################################################################################################
-# ploting storages and anomaly fluxes of precipitation, surface water, and groundwater
+# ploting storages and fluxes of recharge, total withdrawal and groundwater withdrawal
 gG <- ggplotGrob(recharge_chart)
 gH <- ggplotGrob(tot_withdrawal_chart)
 gI <- ggplotGrob(gwt_withdrawal_chart)
@@ -445,4 +450,15 @@ grid.draw(g)
 dev.off()
 ###########################################################################################################################
 
-
+###########################################################################################################################
+# ploting storages and fluxes of precipitation, evaporation and runoff
+gJ <- ggplotGrob(precipitation_chart)
+gK <- ggplotGrob(evaporation_chart)
+gL <- ggplotGrob(runoff_chart)
+file_name = paste(analysis_output_folder, "/storages_fluxes_from_", starting_year, ".pdf",sep ="")
+pdf(file_name, width = (29.7/2.54) * (3/4), height = (21.0/2.54) * (3/4))
+g = cbind(rbind(gA, gB, gC, size = "first"), rbind(gJ, gK, gL, size = "first"), size = "first")
+grid.newpage()
+grid.draw(g)
+dev.off()
+###########################################################################################################################
