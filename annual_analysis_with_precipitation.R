@@ -10,7 +10,7 @@ require(grid)
 args <- commandArgs()
 
 # pcrglobwb output folder that will be analyzed:
-pcrglobwb_output_folder <- "/scratch-shared/edwin/05min_runs_may_2016/pcrglobwb_modflow_from_1901_6LCs_adjusted_ksat/adjusted_ksat/"
+#~ pcrglobwb_output_folder <- "/scratch-shared/edwin/05min_runs_may_2016/pcrglobwb_modflow_from_1901_6LCs_adjusted_ksat/adjusted_ksat/"
 pcrglobwb_output_folder <- args[4]
 
 # type of runs
