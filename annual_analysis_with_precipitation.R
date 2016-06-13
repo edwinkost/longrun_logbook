@@ -42,6 +42,10 @@ with_modflow_option = as.character(args[9])
 with_modflow <- TRUE
 if (with_modflow_option == "no_modflow") {with_modflow <- FALSE}
 
+# the first index for the year that will be analyzed - TODO: REMOVE THIS
+first_index = 0
+first_index = as.integer(args[10])
+
 # change the current working directory to pcrglobwb_output_folder
 setwd(pcrglobwb_output_folder)
 # - and making the folders merged and analysis
@@ -100,26 +104,26 @@ gwt_fossil_file = nc_open( paste(merged_pcrglobwb_output_folder, "/storGroundwat
 # creating empty arrays (annual resolution) 
 
 # - precipitation, evaporation and runoff
-precipitation             = rep(NA, length(time))
-evaporation               = rep(NA, length(time))
-runoff                    = rep(NA, length(time))
+precipitation             = rep(NA, length(year))
+evaporation               = rep(NA, length(year))
+runoff                    = rep(NA, length(year))
 
 # - recharge, withdrawal, groundwater withdrawal, irrigation and non irrigation withdrawal
-recharge                  = rep(NA, length(time))
-total_withdrawal          = rep(NA, length(time))
-groundwater_withdrawal    = rep(NA, length(time))
-non_irrigation_withdrawal = rep(NA, length(time))       # domestic, industrial and livestock
-irrigation_withdrawal     = rep(NA, length(time))       # irrigation only (without livestock)
+recharge                  = rep(NA, length(year))
+total_withdrawal          = rep(NA, length(year))
+groundwater_withdrawal    = rep(NA, length(year))
+non_irrigation_withdrawal = rep(NA, length(year))       # domestic, industrial and livestock
+irrigation_withdrawal     = rep(NA, length(year))       # irrigation only (without livestock)
 
 # - storage terms
-snow_water_equivalent     = rep(NA, length(time))
-free_water_above_snow     = rep(NA, length(time))
-surface_water_storage     = rep(NA, length(time))
-top_water_layer           = rep(NA, length(time))
-interception_storage      = rep(NA, length(time))
-upper_soil_storage        = rep(NA, length(time))
-lower_soil_storage        = rep(NA, length(time))
-groundwater_storage       = rep(NA, length(time))
+snow_water_equivalent     = rep(NA, length(year))
+free_water_above_snow     = rep(NA, length(year))
+surface_water_storage     = rep(NA, length(year))
+top_water_layer           = rep(NA, length(year))
+interception_storage      = rep(NA, length(year))
+upper_soil_storage        = rep(NA, length(year))
+lower_soil_storage        = rep(NA, length(year))
+groundwater_storage       = rep(NA, length(year))
 ###################################################################################################################
 
 
@@ -128,42 +132,37 @@ cell_area_file = nc_open("/home/edwin/data/cell_area_nc/cellsize05min.correct.us
 cell_area = ncvar_get(cell_area_file, "Band1")[,]
 nc_close(cell_area_file)
 
-# time values 
-time = ncvar_get(swt_file, "time"); length(time)
+for (i in 1:length(year)){
 
-# the first index for the year that will be analyzed - TODO: REMOVE THIS
-first_index = as.integer(args[10])
+i_time = i + first_index - 1
 
-for (i in first_index:length(time)){
-
-
-pre_field = ncvar_get(pre_file, "precipitation"                   , c(1, 1, i), c(-1, -1, 1))
-eva_field = ncvar_get(eva_file, "total_evaporation"               , c(1, 1, i), c(-1, -1, 1))
-run_field = ncvar_get(run_file, "total_runoff"                    , c(1, 1, i), c(-1, -1, 1))
-
-rch_field = ncvar_get(rch_file, "groundwater_recharge"            , c(1, 1, i), c(-1, -1, 1))
-snw_field = ncvar_get(snw_file, "snow_water_equivalent"           , c(1, 1, i), c(-1, -1, 1))
-snf_field = ncvar_get(snf_file, "snow_free_water"                 , c(1, 1, i), c(-1, -1, 1))
-
-swt_field = ncvar_get(swt_file, "surface_water_storage"           , c(1, 1, i), c(-1, -1, 1))
-top_field = ncvar_get(top_file, "top_water_layer"                 , c(1, 1, i), c(-1, -1, 1))
-
-int_field = ncvar_get(int_file, "interception_storage"            , c(1, 1, i), c(-1, -1, 1))
-
-upp_field = ncvar_get(upp_file, "upper_soil_storage"              , c(1, 1, i), c(-1, -1, 1))
-low_field = ncvar_get(low_file, "lower_soil_storage"              , c(1, 1, i), c(-1, -1, 1))
-
-if (type_of_run == "non-natural") {
-wtd_field = ncvar_get(wtd_file, "total_abstraction"               , c(1, 1, i), c(-1, -1, 1))
-gwa_field = ncvar_get(gwa_file, "total_groundwater_abstraction"   , c(1, 1, i), c(-1, -1, 1))
-nir_field = ncvar_get(nir_file, "non_irrigation_gross_demand"     , c(1, 1, i), c(-1, -1, 1))
+pre_field = ncvar_get(pre_file, "precipitation"                             , c(1, 1, i_time), c(-1, -1, 1))
+eva_field = ncvar_get(eva_file, "total_evaporation"                         , c(1, 1, i_time), c(-1, -1, 1))
+run_field = ncvar_get(run_file, "total_runoff"                              , c(1, 1, i_time), c(-1, -1, 1))
+                                                                            
+rch_field = ncvar_get(rch_file, "groundwater_recharge"                      , c(1, 1, i_time), c(-1, -1, 1))
+snw_field = ncvar_get(snw_file, "snow_water_equivalent"                     , c(1, 1, i_time), c(-1, -1, 1))
+snf_field = ncvar_get(snf_file, "snow_free_water"                           , c(1, 1, i_time), c(-1, -1, 1))
+                                                                            
+swt_field = ncvar_get(swt_file, "surface_water_storage"                     , c(1, 1, i_time), c(-1, -1, 1))
+top_field = ncvar_get(top_file, "top_water_layer"                           , c(1, 1, i_time), c(-1, -1, 1))
+                                                                            
+int_field = ncvar_get(int_file, "interception_storage"                      , c(1, 1, i_time), c(-1, -1, 1))
+                                                                            
+upp_field = ncvar_get(upp_file, "upper_soil_storage"                        , c(1, 1, i_time), c(-1, -1, 1))
+low_field = ncvar_get(low_file, "lower_soil_storage"                        , c(1, 1, i_time), c(-1, -1, 1))
+                                                                            
+if (type_of_run == "non-natural") {                                         
+wtd_field = ncvar_get(wtd_file, "total_abstraction"                         , c(1, 1, i_time), c(-1, -1, 1))
+gwa_field = ncvar_get(gwa_file, "total_groundwater_abstraction"             , c(1, 1, i_time), c(-1, -1, 1))
+nir_field = ncvar_get(nir_file, "non_irrigation_gross_demand"               , c(1, 1, i_time), c(-1, -1, 1))
 }
 
 if (with_modflow == TRUE) {
-gwt_field = ncvar_get(gwt_file, "groundwater_thickness_estimate"  , c(1, 1, i), c(-1, -1, 1))
+gwt_field = ncvar_get(gwt_file, "groundwater_thickness_estimate"            , c(1, 1, i_time), c(-1, -1, 1))
 } else {
-gwt_active_field = ncvar_get(gwt_active_file, "groundwater_storage"         , c(1, 1, i), c(-1, -1, 1))
-gwt_fossil_field = ncvar_get(gwt_fossil_file, "fossil_groundwater_storage"  , c(1, 1, i), c(-1, -1, 1))
+gwt_active_field = ncvar_get(gwt_active_file, "groundwater_storage"         , c(1, 1, i_time), c(-1, -1, 1))
+gwt_fossil_field = ncvar_get(gwt_fossil_file, "fossil_groundwater_storage"  , c(1, 1, i_time), c(-1, -1, 1))
 gwt_field = gwt_active_field + gwt_fossil_field
 
 }
