@@ -23,6 +23,25 @@ system(cmd_line)
 cmd_line = paste('cp *.sh ' , pcrglobwb_output_folder)
 system(cmd_line)
 
+# with or without merging
+with_merging_option = "no_merging"
+with_merging_option = as.character(args[6])
+with_merging <- TRUE
+if (with_merging_option == "no_merging") {with_merging <- FALSE}
+
+# years used in the model
+starting_year           <- 1901
+starting_year           <- as.integer(args[7])
+end_year                <- 2010
+end_year                <- as.integer(args[8])
+year = seq(starting_year, end_year, 1)
+
+# with or without modflow option
+with_modflow_option = "with_modflow"
+with_modflow_option = as.character(args[9])
+with_modflow <- TRUE
+if (with_modflow_option == "no_modflow") {with_modflow <- FALSE}
+
 # change the current working directory to pcrglobwb_output_folder
 setwd(pcrglobwb_output_folder)
 # - and making the folders merged and analysis
@@ -36,23 +55,19 @@ merged_pcrglobwb_output_folder <- paste(pcrglobwb_output_folder,"/merged/"  , se
 analysis_output_folder         <- paste(pcrglobwb_output_folder,"/analysis/", sep = "")
 
 # running the merging commands
-with_merging <- TRUE
-if (args[6] == "no_merging") {with_merging <- FALSE}
 if (with_merging == TRUE) {
 print("=====================================")
 print("=====================================")
 print("Merging netcdf files in progress ...")
 print("=====================================")
 print("=====================================")
-system('bash merging_annual_files.sh')
-}
 
-# years used in the model
-starting_year           <- 1901
-starting_year           <- as.integer(args[7])
-end_year                <- 2010
-end_year                <- as.integer(args[8])
-year = seq(starting_year, end_year, 1)
+if (with_modflow == TRUE) {
+system('bash merging_annual_files.sh')
+} else {
+system('bash merging_annual_files_without_modflow.sh')
+}
+}
 
 
 # opening netcdf files:
@@ -67,15 +82,18 @@ top_file = nc_open( paste(merged_pcrglobwb_output_folder, "/topWaterLayer_annuaA
 int_file = nc_open( paste(merged_pcrglobwb_output_folder, "/interceptStor_annuaAvg_output.nc"               , sep = "") )
 upp_file = nc_open( paste(merged_pcrglobwb_output_folder, "/storUppTotal_annuaAvg_output.nc"                , sep = "") )
 low_file = nc_open( paste(merged_pcrglobwb_output_folder, "/storLowTotal_annuaAvg_output.nc"                , sep = "") )
-gwt_file = nc_open( paste(merged_pcrglobwb_output_folder, "/groundwaterThicknessEstimate_annuaAvg_output.nc", sep = "") )
 if (type_of_run == "non-natural") {
 wtd_file = nc_open( paste(merged_pcrglobwb_output_folder, "/totalAbstraction_annuaTot_output.nc"            , sep = "") )
 gwa_file = nc_open( paste(merged_pcrglobwb_output_folder, "/totalGroundwaterAbstraction_annuaTot_output.nc" , sep = "") )
 nir_file = nc_open( paste(merged_pcrglobwb_output_folder, "/nonIrrGrossDemand_annuaTot_output.nc"           , sep = "") )
 }
 
-# time values 
-time = ncvar_get(swt_file, "time"); length(time)
+if (with_modflow == TRUE) {
+gwt_file = nc_open( paste(merged_pcrglobwb_output_folder, "/groundwaterThicknessEstimate_annuaAvg_output.nc", sep = "") )
+} else {
+gwt_active_file = nc_open( paste(merged_pcrglobwb_output_folder, "/storGroundwater_annuaAvg_output.nc"      , sep = "") )
+gwt_fossil_file = nc_open( paste(merged_pcrglobwb_output_folder, "/storGroundwaterFossil_annuaAvg_output.nc", sep = "") )
+}
 
 
 ###################################################################################################################
@@ -110,6 +128,8 @@ cell_area_file = nc_open("/home/edwin/data/cell_area_nc/cellsize05min.correct.us
 cell_area = ncvar_get(cell_area_file, "Band1")[,]
 nc_close(cell_area_file)
 
+# time values 
+time = ncvar_get(swt_file, "time"); length(time)
 
 
 for (i in 1:length(time)){
@@ -131,13 +151,21 @@ int_field = ncvar_get(int_file, "interception_storage"            , c(1, 1, i), 
 upp_field = ncvar_get(upp_file, "upper_soil_storage"              , c(1, 1, i), c(-1, -1, 1))
 low_field = ncvar_get(low_file, "lower_soil_storage"              , c(1, 1, i), c(-1, -1, 1))
 
-gwt_field = ncvar_get(gwt_file, "groundwater_thickness_estimate"  , c(1, 1, i), c(-1, -1, 1))
-
 if (type_of_run == "non-natural") {
 wtd_field = ncvar_get(wtd_file, "total_abstraction"               , c(1, 1, i), c(-1, -1, 1))
 gwa_field = ncvar_get(gwa_file, "total_groundwater_abstraction"   , c(1, 1, i), c(-1, -1, 1))
 nir_field = ncvar_get(nir_file, "non_irrigation_gross_demand"     , c(1, 1, i), c(-1, -1, 1))
 }
+
+if (with_modflow == TRUE) {
+gwt_field = ncvar_get(gwt_file, "groundwater_thickness_estimate"  , c(1, 1, i), c(-1, -1, 1))
+} else {
+gwt_active_field = ncvar_get(gwt_active_file, "groundwater_storage"         , c(1, 1, i), c(-1, -1, 1))
+gwt_fossil_field = ncvar_get(gwt_fossil_file, "fossil_groundwater_storage"  , c(1, 1, i), c(-1, -1, 1))
+gwt_field = gwt_active_field + gwt_fossil_field
+
+}
+
 
 #~ # Ignore zero values for surface water store.                     
 #~ swt_field_original = swt_field
