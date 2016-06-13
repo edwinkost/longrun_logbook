@@ -131,8 +131,10 @@ nc_close(cell_area_file)
 # time values 
 time = ncvar_get(swt_file, "time"); length(time)
 
+# the first index for the year that will be analyzed - TODO: REMOVE THIS
+first_index = as.integer(args[10])
 
-for (i in 1:length(time)){
+for (i in first_index:length(time)){
 
 
 pre_field = ncvar_get(pre_file, "precipitation"                   , c(1, 1, i), c(-1, -1, 1))
