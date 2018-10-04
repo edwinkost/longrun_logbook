@@ -13,6 +13,10 @@ args <- commandArgs()
 #~ pcrglobwb_output_folder <- "/scratch-shared/edwin/05min_runs_may_2016/pcrglobwb_modflow_from_1901_6LCs_adjusted_ksat/adjusted_ksat/"
 pcrglobwb_output_folder <- args[4]
 
+# type of runs
+type_of_run <- "non-natural"
+type_of_run <- args[5]
+
 #~ # copy the script to the pcrglobwb_output_folder
 #~ cmd_line = paste('cp *.R '  , pcrglobwb_output_folder)
 #~ system(cmd_line)
@@ -50,7 +54,8 @@ system('mkdir analysis')
 merged_pcrglobwb_output_folder <- paste(pcrglobwb_output_folder,"/merged/"  , sep = "")
 
 # output folder for this analysis:
-analysis_output_folder         <- paste(pcrglobwb_output_folder,"/analysis/", sep = "")
+#~ analysis_output_folder         <- paste(pcrglobwb_output_folder,"/analysis/", sep = "")
+analysis_output_folder         <- "/scratch-shared/edwinhs/test_analysis/"
 
 # running the merging commands
 if (with_merging == TRUE) {
