@@ -52,6 +52,7 @@ system('mkdir analysis')
 
 # output folder that contains the merged netcdf files
 merged_pcrglobwb_output_folder <- paste(pcrglobwb_output_folder,"/merged/"  , sep = "")
+merged_pcrglobwb_output_folder <- pcrglobwb_output_folder
 
 # output folder for this analysis:
 #~ analysis_output_folder         <- paste(pcrglobwb_output_folder,"/analysis/", sep = "")
