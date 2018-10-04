@@ -119,6 +119,8 @@ cell_area_file = nc_open("/home/edwin/data/cell_area_nc/cellsize05min.correct.us
 cell_area = ncvar_get(cell_area_file, "Band1")[,]
 nc_close(cell_area_file)
 
+print year
+
 for (i in 1:length(year)){
 
 i_time = i + first_index - 1
