@@ -125,6 +125,8 @@ for (i in 1:length(year)){
 
 i_time = i + first_index - 1
 
+print(i)
+
 pre_field = ncvar_get(pre_file, "precipitation"                             , c(1, 1, i_time), c(-1, -1, 1))
 eva_field = ncvar_get(eva_file, "total_evaporation"                         , c(1, 1, i_time), c(-1, -1, 1))
 run_field = ncvar_get(run_file, "total_runoff"                              , c(1, 1, i_time), c(-1, -1, 1))
