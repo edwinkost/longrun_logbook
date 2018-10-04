@@ -147,8 +147,6 @@ gwt_active_field = ncvar_get(gwt_active_file, "groundwater_storage"         , c(
 gwt_fossil_field = ncvar_get(gwt_fossil_file, "fossil_groundwater_storage"  , c(1, 1, i_time), c(-1, -1, 1))
 gwt_field = gwt_active_field + gwt_fossil_field
 
-}
-
 
 #~ # Ignore zero values for surface water store.                     
 #~ swt_field_original = swt_field
