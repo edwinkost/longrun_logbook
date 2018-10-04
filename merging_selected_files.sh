@@ -1,4 +1,6 @@
 
+set -x
+
 cd /scratch-shared/edwinsut/pcrglobwb2_output_05min_gmd_paper/natural/begin_from_1958/global/netcdf/merged_1958-2015/
 
 cdo -L -f nc4 -z zip -mergetime ../precipitation_annuaTot_output_*.nc           precipitation_annuaTot_output_1958_to_2015.nc
@@ -10,7 +12,6 @@ cdo -L -f nc4 -z zip -mergetime ../baseflow_annuaTot_output_*.nc                
 cdo -L -f nc4 -z zip -mergetime ../totalAbstraction_annuaTot_output_*.nc        totalAbstraction_annuaTot_output_1958_to_2015.nc
 cdo -L -f nc4 -z zip -mergetime ../desalinationAbstraction_annuaTot_output_*.nc desalinationAbstraction_annuaTot_output_1958_to_2015.nc
 cdo -L -f nc4 -z zip -mergetime ../surfaceWaterAbstraction_annuaTot_output_*.nc surfaceWaterAbstraction_annuaTot_output_1958_to_2015.nc
-
 
 cdo -L -f nc4 -z zip -mergetime ../snowCoverSWE_annuaAvg_output_*.nc        snowCoverSWE_annuaAvg_output_1958_to_2015.nc
 cdo -L -f nc4 -z zip -mergetime ../snowFreeWater_annuaAvg_output_*.nc       snowFreeWater_annuaAvg_output_1958_to_2015.nc
