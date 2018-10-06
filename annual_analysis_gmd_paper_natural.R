@@ -26,7 +26,7 @@ first_index <- as.integer(args[7])
 first_index <- 1
 
 # output folder for this analysis
-first_index <- as.integer(args[8])
+this_analysis_output_folder <- args[8]
 this_analysis_output_folder <- "/scratch-shared/edwinhs/pcrglobwb2_output_05min_gmd_paper/natural/analysis/annual_fluxes/"
 cmd_line = paste("mkdir -p ", this_analysis_output_folder, sep = "")
 system(cmd_line)
