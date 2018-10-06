@@ -227,7 +227,7 @@ amplitude = max(
 
 # making data frame for the absolute value and write it to file
 data_frame_absolute = data.frame(year, total_water_storage, surface_water, snow, interception, soil_moisture, groundwater)
-file_name = paste(analysis_output_folder, "absolute_from_", starting_year, ".txt",sep ="")
+file_name = paste(this_analysis_output_folder, "absolute_from_", starting_year, ".txt",sep ="")
 write.table(data_frame_absolute, file_name, sep = ";", row.names = FALSE)
 
 # calculating anomaly values
