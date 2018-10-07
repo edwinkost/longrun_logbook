@@ -12,7 +12,7 @@ args <- commandArgs()
 # pcrglobwb output folder that will be analyzed:
 #~ pcrglobwb_output_folder <- "/scratch-shared/edwin/05min_runs_may_2016/pcrglobwb_modflow_from_1901_6LCs_adjusted_ksat/adjusted_ksat/"
 pcrglobwb_output_folder <- args[4]
-pcrglobwb_output_folder <- "/scratch-shared/edwinsut/pcrglobwb2_output_05min_gmd_paper/natural/begin_from_1958/global/netcdf/merged_1958-2015/"
+pcrglobwb_output_folder <- "/scratch-shared/edwinhs/05min_runs_for_gmd_paper_30_oct_2017/05min_runs_4LCs_accutraveltime_cru-forcing_1958-2015/non-natural_starting_from_1958/merged_1958_to_2015_for_annual_flux_analysis/"
 
 # years used in the model
 starting_year           <- as.integer(args[5])
@@ -27,7 +27,7 @@ first_index <- 1
 
 # output folder for this analysis
 this_analysis_output_folder <- args[8]
-this_analysis_output_folder <- "/scratch-shared/edwinhs/pcrglobwb2_output_05min_gmd_paper/natural/analysis/annual_fluxes/"
+this_analysis_output_folder <- "/scratch-shared/edwinhs/05min_runs_for_gmd_paper_30_oct_2017/05min_runs_4LCs_accutraveltime_cru-forcing_1958-2015/non-natural_starting_from_1958/merged_1958_to_2015_for_annual_flux_analysis/annual_fluxes/"
 cmd_line = paste("mkdir -p ", this_analysis_output_folder, sep = "")
 system(cmd_line)
 
